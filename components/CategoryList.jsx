@@ -12,7 +12,11 @@ const CategoryList = () => {
 
   return (
     <View>
-      <ScrollView horizontal className="my-6 flex-row px-6">
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        className="my-6 flex-row px-6"
+      >
         {categories.map((category, index) => (
           <TouchableOpacity
             activeOpacity={0.5}

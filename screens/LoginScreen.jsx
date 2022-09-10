@@ -35,7 +35,7 @@ const LoginScreen = ({ navigation }) => {
         source={{
           uri: 'https://imgur.com/Z2a8bsF.png',
         }}
-        style={{ width: 150, height: 150 }}
+        style={{ width: 150, height: 150, borderRadius: 9999 }}
       />
       <View style={styles.inputContainer}>
         <Input

@@ -135,7 +135,8 @@ const HomeScreen = ({ navigation }) => {
       <CategoryList />
       {products.length ? (
         <FlatList
-          className="px-5 "
+          showsVerticalScrollIndicator={false}
+          className="px-5"
           columnWrapperStyle={{ justifyContent: 'space-between' }}
           numColumns={2}
           keyExtractor={(item) => item.id}
