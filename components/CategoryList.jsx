@@ -1,23 +1,15 @@
-import {
-  View,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setSelectedCategory } from '../features/products/products';
 
 const CategoryList = () => {
-  const categories = [
-    'All',
-    'Shirts',
-    'Sweaters',
-    'Pants',
-    'Coats',
-    'Coats',
-    'Coats',
-  ];
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const { categories, selectedCategory } = useSelector(
+    (state) => state.products
+  );
+
+  const dispatch = useDispatch();
+
   return (
     <View>
       <ScrollView horizontal className="my-6 flex-row px-6">
@@ -26,14 +18,16 @@ const CategoryList = () => {
             activeOpacity={0.5}
             key={index}
             className={`mr-6 ${
-              index === selectedIndex && 'border-b pb-1  border-blue-500'
+              category.toLowerCase() === selectedCategory.toLowerCase() &&
+              'border-b pb-1  border-blue-500'
             }`}
-            onPress={() => setSelectedIndex(index)}
+            onPress={() => dispatch(setSelectedCategory(category))}
           >
             <Text
               key={index}
               className={`text-gray-500 font-bold text-[16px] ${
-                selectedIndex === index && 'text-blue-500'
+                category.toLowerCase() === selectedCategory.toLowerCase() &&
+                'text-blue-500'
               }`}
             >
               {category.toUpperCase()}

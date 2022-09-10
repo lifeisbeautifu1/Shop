@@ -14,22 +14,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { logout } from '../features/auth/auth';
 import { CategoryList, Card } from '../components';
-import products from '../products.json';
+import {
+  getProducts,
+  getCategories,
+  searchProducts,
+  setSearchTerm,
+  setOrder,
+} from '../features/products/products';
 
 const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
 
+  const { products, selectedCategory, searchTerm, order } = useSelector(
+    (state) => state.products
+  );
+
   useEffect(() => {
     if (!user) {
       navigation.replace('Login');
     }
   }, [user]);
+
+  useEffect(() => {
+    dispatch(searchProducts());
+  }, [selectedCategory, searchTerm, order]);
+
+  useEffect(() => {
+    dispatch(getProducts());
+    dispatch(getCategories());
+  }, []);
 
   const signOutUser = () => {
     dispatch(logout());
@@ -88,32 +107,50 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View className="mt-4 flex-row px-5">
-        <View className="h-[50px] flex-row flex-1 pl-[20px] items-center bg-gray-100 rounded-lg">
+        <View
+          style={{ borderRadius: 10 }}
+          className="h-[50px] flex-row flex-1 pl-[20px] items-center bg-gray-100"
+        >
           <AntDesign name="search1" size={24} color="black" />
           <TextInput
-            autoFocus
             placeholder="Search"
-            className="ml-2 font-bold shadow-inner text-gray-600 text-[18px] flex-1"
+            value={searchTerm}
+            onChangeText={(text) => dispatch(setSearchTerm(text))}
+            className="ml-2 font-bold  text-gray-600 text-[18px] flex-1"
           />
         </View>
         <TouchableOpacity
           activeOpacity={0.5}
-          className="ml-2 h-[50px] w-[50px] bg-blue-500 rounded-[10px] justify-center items-center"
+          onPress={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))}
+          style={{ borderRadius: 10 }}
+          className="ml-2 h-[50px] w-[50px] bg-blue-500 justify-center items-center"
         >
-          <MaterialIcons name="sort" size={24} color="white" />
+          <MaterialCommunityIcons
+            name={order === 'desc' ? 'sort-variant' : 'sort-reverse-variant'}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
       </View>
       <CategoryList />
-      <FlatList
-        className="px-5"
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        numColumns={2}
-        keyExtractor={(item) => item.id}
-        data={products.products}
-        renderItem={({ item }) => (
-          <Card navigation={navigation} product={item} />
-        )}
-      />
+      {products.length ? (
+        <FlatList
+          className="px-5 "
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          data={products}
+          renderItem={({ item }) => (
+            <Card navigation={navigation} product={item} />
+          )}
+        />
+      ) : (
+        <View className="flex-1 items-center justify-center">
+          <Text className="font-bold text-[20px] text-gray-500">
+            No products found
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

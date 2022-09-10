@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { useLayoutEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { Rating } from '../components';
 
 const DetailsScreen = ({ route, navigation }) => {
   const product = route.params.product;
@@ -45,14 +46,20 @@ const DetailsScreen = ({ route, navigation }) => {
           source={{ uri: product.image }}
         />
       </View>
-      <View className="flex-[0.55] bg-gray-100 rounded-[20px] mx-2 mt-5 pt-[30px]">
+      <View
+        style={{ borderRadius: 20 }}
+        className="flex-[0.55] bg-gray-100  mx-2 mt-5 pt-[30px]"
+      >
         <View className="flex-row ml-5 items-end">
           <View className="w-[25px] h-[2px] bg-black mb-1 mr-2"></View>
           <Text className="text-[18px] font-bold">Best Choice</Text>
         </View>
         <View className="mt-5 ml-5 flex-row justify-between items-center">
           <Text className="text-[22px] font-bold">{product.name}</Text>
-          <View className="w-[80px] h-[40px] bg-blue-500 rounded-l-[25px] justify-center items-center">
+          <View
+            style={{ borderTopLeftRadius: 20, borderBottomLeftRadius: 20 }}
+            className="w-[80px] h-[40px] bg-blue-500  justify-center items-center"
+          >
             <Text className="font-bold text-white">${product.price}</Text>
           </View>
         </View>
@@ -61,25 +68,30 @@ const DetailsScreen = ({ route, navigation }) => {
           <Text className="mt-5 text-[16px] text-gray-500 leading-[22px]">
             {product.description}
           </Text>
-          <View className="flex-row justify-between mt-5">
+          <Rating rating={product.rating} />
+
+          <View className="flex-row justify-between mt-2">
             <View className="items-center flex-row">
               <TouchableOpacity
                 activeOpacity={0.5}
-                className="w-[60px] h-[40px] justify-center items-center rounded border border-gray-500"
+                style={{ borderRadius: 4 }}
+                className="w-[60px] h-[40px] justify-center items-center  border border-gray-500"
               >
                 <Text className="font-medium text-[28px]">-</Text>
               </TouchableOpacity>
               <Text className="mx-4 font-bold text-[20px]">1</Text>
               <TouchableOpacity
                 activeOpacity={0.5}
-                className="w-[60px] h-[40px] justify-center items-center rounded border border-gray-500"
+                style={{ borderRadius: 4 }}
+                className="w-[60px] h-[40px] justify-center items-center border border-gray-500"
               >
                 <Text className="font-medium text-[28px]">+</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               activeOpacity={0.5}
-              className="w-[150px] h-[50px] rounded-[30px] bg-blue-500 items-center justify-center"
+              style={{ borderRadius: 30 }}
+              className="w-[150px] h-[50px]  bg-blue-500 items-center justify-center"
             >
               <Text className="font-bold text-[18px] text-white">Buy</Text>
             </TouchableOpacity>

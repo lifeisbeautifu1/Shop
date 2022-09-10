@@ -8,8 +8,8 @@ const Card = ({ product, navigation }) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('Details', { product })}
       activeOpacity={0.5}
-      className="bg-gray-100 h-[225px] p-4 mb-5 rounded-[10px] mx-1"
-      style={{ width }}
+      className="bg-gray-100 h-[225px] p-4 mb-5  mx-1"
+      style={{ width, borderRadius: 10 }}
     >
       <View className="h-[100px] items-center">
         <Image
@@ -18,12 +18,13 @@ const Card = ({ product, navigation }) => {
           source={{ uri: product.image }}
         />
       </View>
-      <Text className="mt-10 font-bold text-[17px]">{product.name}</Text>
-      <View className="mt-2 flex-row justify-between">
+      <Text className="mt-12 font-bold text-[17px]">{product.name}</Text>
+      <View className="mt-1 flex-row justify-between">
         <Text className="font-bold text-[19px]">${product.price}</Text>
         <TouchableOpacity
           activeOpacity={0.5}
-          className="h-[25px] w-[25px] rounded bg-blue-500 items-center justify-center  "
+          style={{ borderRadius: 4 }}
+          className="h-[25px] w-[25px] bg-blue-500 items-center justify-center  "
         >
           <Text className="font-bold text-[18px] text-white">+</Text>
         </TouchableOpacity>
