@@ -4,7 +4,12 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import axios from 'axios';
 
-import { LoginScreen, RegisterScreen, HomeScreen } from './screens';
+import {
+  LoginScreen,
+  RegisterScreen,
+  HomeScreen,
+  DetailsScreen,
+} from './screens';
 
 axios.defaults.baseURL = 'https://project-landc.herokuapp.com/api';
 axios.defaults.withCredentials = true;
@@ -36,6 +41,11 @@ export default function App() {
             options={{ title: 'Home' }}
             name="Home"
             component={HomeScreen}
+          />
+          <Stack.Screen
+            options={{ title: 'Details' }}
+            name="Details"
+            component={DetailsScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
