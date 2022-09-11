@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { Avatar } from '@rneui/base';
 import { Entypo } from '@expo/vector-icons';
@@ -23,6 +24,8 @@ import {
   getCategories,
   searchProducts,
   setSearchTerm,
+  fetchMoreProducts,
+  setPage,
   setOrder,
 } from '../features/products/products';
 
@@ -31,9 +34,8 @@ const HomeScreen = ({ navigation }) => {
 
   const { user } = useSelector((state) => state.auth);
 
-  const { products, selectedCategory, searchTerm, order } = useSelector(
-    (state) => state.products
-  );
+  const { products, selectedCategory, searchTerm, order, page, loading } =
+    useSelector((state) => state.products);
 
   useEffect(() => {
     if (!user) {
@@ -43,7 +45,11 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(searchProducts());
-  }, [selectedCategory, searchTerm, order]);
+  }, [selectedCategory, searchTerm]);
+
+  useEffect(() => {
+    if (page !== 1) dispatch(fetchMoreProducts());
+  }, [page]);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -141,6 +147,9 @@ const HomeScreen = ({ navigation }) => {
           numColumns={2}
           keyExtractor={(item) => item.id}
           data={products}
+          onEndReachedThreshold={0.2}
+          onEndReached={() => dispatch(setPage(page + 1))}
+          ListFooterComponent={<View>{loading && <ActivityIndicator />}</View>}
           renderItem={({ item }) => (
             <Card navigation={navigation} product={item} />
           )}

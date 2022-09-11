@@ -5,6 +5,8 @@ const initialState = {
   products: [],
   categories: ['All'],
   selectedCategory: 'All',
+  page: 1,
+  pages: 1,
   searchTerm: '',
   order: 'desc',
   loading: false,
@@ -54,18 +56,45 @@ export const searchProducts = createAsyncThunk(
   }
 );
 
+export const fetchMoreProducts = createAsyncThunk(
+  '/products/fetchMoreProducts',
+  async (_, thunkAPI) => {
+    try {
+      const selectedCategory = thunkAPI.getState().products.selectedCategory;
+      const searchTerm = thunkAPI.getState().products.searchTerm;
+      const order = thunkAPI.getState().products.order;
+      const page = thunkAPI.getState().products.page;
+      const { data } = await axios.get(
+        `/products/search?category=${selectedCategory.toLowerCase()}&search=${searchTerm}&order=${order}&page=${page}`
+      );
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue('error');
+    }
+  }
+);
+
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
+      state.page = 1;
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
+      state.page = 1;
     },
     setOrder: (state, action) => {
       state.order = action.payload;
+      state.products.sort((a, b) =>
+        state.order === 'desc' ? b.price - a.price : a.price - b.price
+      );
+    },
+    setPage: (state, action) => {
+      state.page = Math.min(action.payload, state.pages);
     },
   },
   extraReducers: (builder) => {
@@ -75,6 +104,7 @@ export const productsSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.products = action.payload.products;
+        state.pages = action.payload.pages;
         state.loading = false;
       })
       .addCase(getProducts.rejected, (state, action) => {
@@ -95,15 +125,27 @@ export const productsSlice = createSlice({
       })
       .addCase(searchProducts.fulfilled, (state, action) => {
         state.products = action.payload.products;
+        state.pages = action.payload.pages;
         state.loading = false;
       })
       .addCase(searchProducts.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(fetchMoreProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMoreProducts.fulfilled, (state, action) => {
+        state.products = [...state.products, ...action.payload.products];
+        state.pages = action.payload.pages;
+        state.loading = false;
+      })
+      .addCase(fetchMoreProducts.rejected, (state, action) => {
         state.loading = false;
       });
   },
 });
 
-export const { setSelectedCategory, setSearchTerm, setOrder } =
+export const { setSelectedCategory, setSearchTerm, setOrder, setPage } =
   productsSlice.actions;
 
 export default productsSlice.reducer;

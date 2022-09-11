@@ -18,7 +18,7 @@ const Card = ({ product, navigation }) => {
           source={{ uri: product.image }}
         />
       </View>
-      <Text className="mt-12 font-bold text-[17px]">{product.name}</Text>
+      <Text className="mt-12 font-bold text-[17px]">{product.title}</Text>
       <View className="mt-1 flex-row justify-between">
         <Text className="font-bold text-[19px]">${product.price}</Text>
         <TouchableOpacity

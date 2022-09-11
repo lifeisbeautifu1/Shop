@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useLayoutEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { Rating, ImageCarousel } from '../components';
@@ -33,12 +27,7 @@ const DetailsScreen = ({ route, navigation }) => {
       ),
     });
   }, [navigation]);
-  const images = [
-    'https://imgur.com/uR9bAlO.png',
-    'https://imgur.com/j3W195r.png',
-    'https://i.imgur.com/11hxAch.png',
-    'https://imgur.com/GgZO9Tj.png',
-  ];
+
   return (
     <SafeAreaView className="flex-1 bg-white px-5">
       {/* <View className="flex-[0.45] mt-5 justify-center items-center">
@@ -52,7 +41,7 @@ const DetailsScreen = ({ route, navigation }) => {
           source={{ uri: product.image }}
         />
       </View> */}
-      <ImageCarousel images={images} />
+      <ImageCarousel images={product.images} />
       <View
         style={{ borderRadius: 20 }}
         className="flex-[0.55] bg-gray-100  mx-2 mt-5 pt-[30px]"
@@ -62,7 +51,7 @@ const DetailsScreen = ({ route, navigation }) => {
           <Text className="text-[18px] font-bold">Best Choice</Text>
         </View>
         <View className="mt-5 ml-5 flex-row justify-between items-center">
-          <Text className="text-[22px] font-bold">{product.name}</Text>
+          <Text className="text-[22px] font-bold">{product.title}</Text>
           <View
             style={{ borderTopLeftRadius: 20, borderBottomLeftRadius: 20 }}
             className="w-[80px] h-[40px] bg-blue-500  justify-center items-center"
