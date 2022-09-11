@@ -143,12 +143,17 @@ const HomeScreen = ({ navigation }) => {
         <FlatList
           showsVerticalScrollIndicator={false}
           className="px-5"
+          style={{ flexGrow: 1 }}
           columnWrapperStyle={{ justifyContent: 'space-between' }}
           numColumns={2}
           keyExtractor={(item) => item.id}
           data={products}
-          onEndReachedThreshold={0.2}
-          onEndReached={() => dispatch(setPage(page + 1))}
+          onEndReachedThreshold={0}
+          onEndReached={() => {
+            if (!loading) {
+              dispatch(setPage(page + 1));
+            }
+          }}
           ListFooterComponent={<View>{loading && <ActivityIndicator />}</View>}
           renderItem={({ item }) => (
             <Card navigation={navigation} product={item} />

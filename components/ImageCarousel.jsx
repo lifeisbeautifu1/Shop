@@ -57,10 +57,12 @@ const ImageCarousel = ({ images }) => {
 export default ImageCarousel;
 
 const styles = StyleSheet.create({
-  root: {},
+  root: {
+    flex: 0.4,
+  },
   image: {
     margin: 10,
-    height: 250,
+    height: '100%',
     resizeMode: 'contain',
   },
   dot: {

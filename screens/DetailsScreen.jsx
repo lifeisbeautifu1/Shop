@@ -29,7 +29,7 @@ const DetailsScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white px-5">
+    <SafeAreaView className="flex-1  bg-white px-5">
       {/* <View className="flex-[0.45] mt-5 justify-center items-center">
         <Image
           style={{
@@ -43,8 +43,8 @@ const DetailsScreen = ({ route, navigation }) => {
       </View> */}
       <ImageCarousel images={product.images} />
       <View
-        style={{ borderRadius: 20 }}
-        className="flex-[0.55] bg-gray-100  mx-2 mt-5 pt-[30px]"
+        style={{ borderRadius: 20, flex: 0.6 }}
+        className=" bg-gray-100  mx-2 mt-5 pt-[30px]"
       >
         <View className="flex-row ml-5 items-end">
           <View className="w-[25px] h-[2px] bg-black mb-1 mr-2"></View>
