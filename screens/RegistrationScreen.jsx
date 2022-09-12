@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useDispatch, useSelector } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
 
 import { register, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
@@ -23,7 +24,7 @@ const RegistrationScreen = ({ navigation }) => {
 
   const headerHeight = useHeaderHeight();
 
-  const { errors, loading } = useSelector((state) => state.auth);
+  const { errors, loading, user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -32,16 +33,21 @@ const RegistrationScreen = ({ navigation }) => {
     dispatch(register(inputs));
   };
 
+  useEffect(() => {
+    user && navigation.navigate('Home');
+  }, [user]);
+
   const handleOnchange = (text, input) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));
   };
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={headerHeight}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? headerHeight : undefined}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ backgroundColor: '#fff', flex: 1 }}
     >
+      <StatusBar style="light" />
       <Loader visible={loading} />
       <ScrollView
         showsVerticalScrollIndicator={false}

@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
               title={user && user.username && user.username[0]}
               containerStyle={{ backgroundColor: '#2c6bed' }}
             >
-              <Avatar.Accessory size={12} />
+              <Avatar.Accessory size={14} />
             </Avatar>
           </TouchableOpacity>
         </View>

@@ -100,6 +100,7 @@
 
 import { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, Keyboard, ScrollView } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { login, resetError } from '../features/auth/auth';
@@ -133,6 +134,7 @@ const LoginScreen = ({ navigation }) => {
       behavior="height"
       style={{ backgroundColor: '#fff', flex: 1 }}
     >
+      <StatusBar style="light" />
       <Loader visible={loading} />
       <ScrollView
         showsVerticalScrollIndicator={false}
