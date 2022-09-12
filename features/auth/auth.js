@@ -4,7 +4,13 @@ import axios from 'axios';
 const initialState = {
   user: null,
   loading: false,
-  errors: null,
+  initialRouteName: '',
+  errors: {
+    username: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
+  },
 };
 
 export const login = createAsyncThunk(
@@ -58,7 +64,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     resetErrors: (state) => {
-      state.errors = null;
+      state.errors = {
+        username: null,
+        email: null,
+        password: null,
+        confirmPassword: null,
+      };
+    },
+    resetError: (state, action) => {
+      state.errors[action.payload.input] = action.payload.error;
     },
   },
   extraReducers: (builder) => {
@@ -69,10 +83,15 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
-        state.errors = null;
+        state.errors = {
+          username: null,
+          email: null,
+          password: null,
+          confirmPassword: null,
+        };
       })
       .addCase(login.rejected, (state, action) => {
-        state.errors = action.payload;
+        state.errors = { ...state.errors, ...action.payload };
         state.loading = false;
       })
       .addCase(register.pending, (state) => {
@@ -81,10 +100,15 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
-        state.errors = null;
+        state.errors = {
+          username: null,
+          email: null,
+          password: null,
+          confirmPassword: null,
+        };
       })
       .addCase(register.rejected, (state, action) => {
-        state.errors = action.payload;
+        state.errors = { ...state.errors, ...action.payload };
         state.loading = false;
       })
       .addCase(logout.pending, (state) => {
@@ -93,7 +117,12 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, (state, action) => {
         state.user = null;
         state.loading = false;
-        state.errors = null;
+        state.errors = {
+          username: null,
+          email: null,
+          password: null,
+          confirmPassword: null,
+        };
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
@@ -104,14 +133,21 @@ export const authSlice = createSlice({
       .addCase(init.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
-        state.errors = null;
+        state.initialRouteName = 'Home';
+        state.errors = {
+          username: null,
+          email: null,
+          password: null,
+          confirmPassword: null,
+        };
       })
       .addCase(init.rejected, (state, action) => {
         state.loading = false;
+        state.initialRouteName = 'Login';
       });
   },
 });
 
-export const { resetErrors } = authSlice.actions;
+export const { resetErrors, resetError } = authSlice.actions;
 
 export default authSlice.reducer;

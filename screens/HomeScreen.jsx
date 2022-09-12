@@ -1,11 +1,9 @@
 import {
   View,
   SafeAreaView,
-  ScrollView,
   FlatList,
   TextInput,
   Text,
-  StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
@@ -73,10 +71,11 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity onPress={signOutUser}>
             <Avatar
               rounded
-              source={{
-                uri: 'https://st4.depositphotos.com/9998432/23259/v/600/depositphotos_232591962-stock-illustration-person-gray-photo-placeholder-man.jpg',
-              }}
-            />
+              title={user && user.username && user.username[0]}
+              containerStyle={{ backgroundColor: '#2c6bed' }}
+            >
+              <Avatar.Accessory size={12} />
+            </Avatar>
           </TouchableOpacity>
         </View>
       ),
