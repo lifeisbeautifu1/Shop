@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import Navigation from './screens/Navigation';
+import Navigation from './routes/Navigation';
 
 import axios from 'axios';
 

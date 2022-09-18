@@ -8,13 +8,16 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 
 import { register, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
-const RegistrationScreen = ({ navigation }) => {
+const RegistrationScreen = () => {
+  const navigation = useNavigation();
+
   const [inputs, setInputs] = useState({
     username: '',
     email: '',
@@ -34,7 +37,7 @@ const RegistrationScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    user && navigation.navigate('Home');
+    user && navigation.navigate('HomeTabs');
   }, [user]);
 
   const handleOnchange = (text, input) => {
@@ -47,7 +50,7 @@ const RegistrationScreen = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ backgroundColor: '#fff', flex: 1 }}
     >
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Loader visible={loading} />
       <ScrollView
         showsVerticalScrollIndicator={false}

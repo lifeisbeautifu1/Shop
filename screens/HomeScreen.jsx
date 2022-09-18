@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { Avatar } from '@rneui/base';
 import { Entypo } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,7 +29,9 @@ import {
   setOrder,
 } from '../features/products/products';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
@@ -79,24 +83,25 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       ),
-      headerRight: () => (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            width: 40,
-          }}
-        >
-          <TouchableOpacity activeOpacity={0.5}>
-            <Entypo name="menu" size={28} color="black" />
-          </TouchableOpacity>
-        </View>
-      ),
+      // headerRight: () => (
+      //   <View
+      //     style={{
+      //       flexDirection: 'row',
+      //       justifyContent: 'center',
+      //       width: 40,
+      //     }}
+      //   >
+      //     <TouchableOpacity activeOpacity={0.5}>
+      //       <Entypo name="menu" size={28} color="black" />
+      //     </TouchableOpacity>
+      //   </View>
+      // ),
     });
   }, [navigation]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <StatusBar style="dark" />
       <View className="flex-row justify-between mt-5 px-5">
         <View>
           <Text className="text-[25px] font-extrabold">Welcome to</Text>
@@ -104,14 +109,14 @@ const HomeScreen = ({ navigation }) => {
             L&C Shop
           </Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.5}
           className="mr-3 flex-1 justify-center items-end"
         >
           <FontAwesome name="shopping-cart" size={24} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
-      <View className="mt-4 flex-row px-5">
+      <View className="mt-4 flex-row items-center px-5">
         <View
           style={{ borderRadius: 10 }}
           className="h-[50px] flex-row flex-1 pl-[20px] items-center bg-gray-100"
@@ -127,8 +132,8 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))}
-          style={{ borderRadius: 10 }}
-          className="ml-2 h-[50px] w-[50px] bg-blue-500 justify-center items-center"
+          style={{ borderRadius: 4 }}
+          className="ml-2 h-[45px] w-[45px] bg-blue-500 justify-center items-center"
         >
           <MaterialCommunityIcons
             name={order === 'desc' ? 'sort-variant' : 'sort-reverse-variant'}

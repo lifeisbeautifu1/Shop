@@ -133,7 +133,7 @@ export const authSlice = createSlice({
       .addCase(init.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
-        state.initialRouteName = 'Home';
+        state.initialRouteName = 'HomeTabs';
         state.errors = {
           username: null,
           email: null,

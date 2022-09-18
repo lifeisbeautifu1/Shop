@@ -1,9 +1,12 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useLayoutEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Rating, ImageCarousel } from '../components';
 
-const DetailsScreen = ({ route, navigation }) => {
+const DetailsScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
   const product = route.params.product;
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -29,7 +32,7 @@ const DetailsScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <SafeAreaView className="flex-1  bg-white px-5">
+    <SafeAreaView className=" bg-white px-5" style={{ flex: 1 }}>
       {/* <View className="flex-[0.45] mt-5 justify-center items-center">
         <Image
           style={{

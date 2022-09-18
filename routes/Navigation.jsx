@@ -3,16 +3,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { LoginScreen, RegistrationScreen, HomeScreen, DetailsScreen } from '.';
+import { LoginScreen, RegistrationScreen } from '../screens';
+import BottomTabNav from '../routes/BottomTabNav';
 import { Loader } from '../components';
 import { init } from '../features/auth/auth';
 
 const Stack = createNativeStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: '#2c6bed' },
-  headerTitleStyle: { color: 'white' },
-  headerTintColor: 'white',
+  // headerStyle: { backgroundColor: '#2c6bed' },
+  // headerTitleStyle: { color: 'white' },
+  // headerTintColor: 'white',
+  // headerShown: false,
 };
 
 export default function Navigation() {
@@ -25,7 +27,9 @@ export default function Navigation() {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+    >
       {!initialRouteName ? (
         <Loader visible={true} />
       ) : (
@@ -44,14 +48,9 @@ export default function Navigation() {
             component={RegistrationScreen}
           />
           <Stack.Screen
-            options={{ title: 'Home' }}
-            name="Home"
-            component={HomeScreen}
-          />
-          <Stack.Screen
-            options={{ title: 'Details' }}
-            name="Details"
-            component={DetailsScreen}
+            options={{ title: 'Tabs', headerShown: false }}
+            name="HomeTabs"
+            component={BottomTabNav}
           />
         </Stack.Navigator>
       )}

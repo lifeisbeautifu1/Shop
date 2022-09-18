@@ -102,11 +102,14 @@ import { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, Keyboard, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { login, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
+  const navigation = useNavigation();
+
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -117,7 +120,7 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    user && navigation.navigate('Home');
+    user && navigation.navigate('HomeTabs');
   }, [user]);
 
   const handleLogin = () => {
@@ -134,7 +137,7 @@ const LoginScreen = ({ navigation }) => {
       behavior="height"
       style={{ backgroundColor: '#fff', flex: 1 }}
     >
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Loader visible={loading} />
       <ScrollView
         showsVerticalScrollIndicator={false}
