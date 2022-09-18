@@ -1,8 +1,11 @@
 import { View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
+interface RatingProps {
+  rating: number;
+}
 
-const Rating = ({ rating }) => {
+const Rating: React.FC<RatingProps> = ({ rating }) => {
   return (
     <View className="mt-2 flex-row ">
       {rating >= 1 ? (

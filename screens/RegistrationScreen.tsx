@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { register, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
@@ -27,9 +27,9 @@ const RegistrationScreen = () => {
 
   const headerHeight = useHeaderHeight();
 
-  const { errors, loading, user } = useSelector((state) => state.auth);
+  const { errors, loading, user } = useAppSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleRegister = () => {
     Keyboard.dismiss();
@@ -37,6 +37,7 @@ const RegistrationScreen = () => {
   };
 
   useEffect(() => {
+    // @ts-ignore
     user && navigation.navigate('HomeTabs');
   }, [user]);
 
@@ -112,6 +113,7 @@ const RegistrationScreen = () => {
           />
           <Button title="Register" onPress={handleRegister} />
           <Text
+            // @ts-ignore
             onPress={() => navigation.navigate('Login')}
             style={{
               color: '#000',

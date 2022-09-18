@@ -7,7 +7,11 @@ import {
 } from 'react-native';
 import { useState, useCallback } from 'react';
 
-const ImageCarousel = ({ images }) => {
+interface ImageCarouselProps {
+  images: string[];
+}
+
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const windowWidth = useWindowDimensions().width;
 

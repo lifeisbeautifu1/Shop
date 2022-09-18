@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Avatar } from '@rneui/base';
 
 import { ShoppingCartScreen } from '../screens';
 import HomeStack from './HomeStack';

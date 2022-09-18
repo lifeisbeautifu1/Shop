@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Input = ({
+interface InputProps {
+  label: string;
+  iconName: 'email-outline' | 'lock-outline' | 'account-outline';
+  error?: null | string;
+  password?: boolean;
+  onChangeText: (text: string) => void;
+  placeholder: string;
+  onFocus: () => void;
+}
+
+const Input: React.FC<InputProps> = ({
   label,
   iconName,
   error,

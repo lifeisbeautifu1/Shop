@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import axios from 'axios';
 
 const initialState = {
@@ -42,8 +43,11 @@ export const searchProducts = createAsyncThunk(
   '/products/searchProducts',
   async (_, thunkAPI) => {
     try {
+      // @ts-ignore
       const selectedCategory = thunkAPI.getState().products.selectedCategory;
+      // @ts-ignore
       const searchTerm = thunkAPI.getState().products.searchTerm;
+      // @ts-ignore
       const order = thunkAPI.getState().products.order;
       const { data } = await axios.get(
         `/products/search?category=${selectedCategory.toLowerCase()}&search=${searchTerm}&order=${order}`
@@ -60,9 +64,13 @@ export const fetchMoreProducts = createAsyncThunk(
   '/products/fetchMoreProducts',
   async (_, thunkAPI) => {
     try {
+      // @ts-ignore
       const selectedCategory = thunkAPI.getState().products.selectedCategory;
+      // @ts-ignore
       const searchTerm = thunkAPI.getState().products.searchTerm;
+      // @ts-ignore
       const order = thunkAPI.getState().products.order;
+      // @ts-ignore
       const page = thunkAPI.getState().products.page;
       const { data } = await axios.get(
         `/products/search?category=${selectedCategory.toLowerCase()}&search=${searchTerm}&order=${order}&page=${page}`

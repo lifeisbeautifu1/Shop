@@ -10,13 +10,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Avatar } from '@rneui/base';
-import { Entypo } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { logout } from '../features/auth/auth';
 import { CategoryList, Card } from '../components';
 import {
@@ -32,15 +30,16 @@ import {
 const HomeScreen = () => {
   const navigation = useNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
 
   const { products, selectedCategory, searchTerm, order, page, loading } =
-    useSelector((state) => state.products);
+    useAppSelector((state) => state.products);
 
   useEffect(() => {
     if (!user) {
+      // @ts-ignore
       navigation.replace('Login');
     }
   }, [user]);
@@ -160,9 +159,7 @@ const HomeScreen = () => {
             }
           }}
           ListFooterComponent={<View>{loading && <ActivityIndicator />}</View>}
-          renderItem={({ item }) => (
-            <Card navigation={navigation} product={item} />
-          )}
+          renderItem={({ item }) => <Card product={item} />}
         />
       ) : (
         <View className="flex-1 items-center justify-center">

@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { LoginScreen, RegistrationScreen } from '../screens';
-import BottomTabNav from '../routes/BottomTabNav';
+import BottomTabNav from './BottomTabNav';
 import { Loader } from '../components';
 import { init } from '../features/auth/auth';
 
@@ -18,18 +18,16 @@ const globalScreenOptions = {
 };
 
 export default function Navigation() {
-  const { initialRouteName } = useSelector((state) => state.auth);
+  const { initialRouteName } = useAppSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(init());
   }, []);
 
   return (
-    <NavigationContainer
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-    >
+    <NavigationContainer>
       {!initialRouteName ? (
         <Loader visible={true} />
       ) : (

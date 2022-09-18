@@ -15,7 +15,13 @@ const initialState = {
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (formData, thunkAPI) => {
+  async (
+    formData: {
+      email: string;
+      password: string;
+    },
+    thunkAPI
+  ) => {
     try {
       const { data } = await axios.post('/auth/login', formData);
       return data;
@@ -28,7 +34,15 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   'auth/register',
-  async (formData, thunkAPI) => {
+  async (
+    formData: {
+      username: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+    },
+    thunkAPI
+  ) => {
     try {
       const { data } = await axios.post('/auth/register', formData);
       return data;
@@ -90,7 +104,7 @@ export const authSlice = createSlice({
           confirmPassword: null,
         };
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action: any) => {
         state.errors = { ...state.errors, ...action.payload };
         state.loading = false;
       })
@@ -107,7 +121,7 @@ export const authSlice = createSlice({
           confirmPassword: null,
         };
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(register.rejected, (state, action: any) => {
         state.errors = { ...state.errors, ...action.payload };
         state.loading = false;
       })

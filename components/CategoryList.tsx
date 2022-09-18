@@ -1,14 +1,14 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setSelectedCategory } from '../features/products/products';
 
 const CategoryList = () => {
-  const { categories, selectedCategory } = useSelector(
+  const { categories, selectedCategory } = useAppSelector(
     (state) => state.products
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <View>

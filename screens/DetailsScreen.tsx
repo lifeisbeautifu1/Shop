@@ -2,7 +2,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  Image,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -14,6 +13,7 @@ import { Rating, ImageCarousel } from '../components';
 const DetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  // @ts-ignore
   const product = route.params.product;
   useLayoutEffect(() => {
     navigation.setOptions({

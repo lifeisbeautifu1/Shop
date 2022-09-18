@@ -1,11 +1,19 @@
 import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+import { IProduct } from '../interfaces';
 
 const width = Dimensions.get('screen').width / 2 - 30;
 
-const Card = ({ product, navigation }) => {
+interface CardProps {
+  product: IProduct;
+}
+
+const Card: React.FC<CardProps> = ({ product }) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
+      // @ts-ignore
       onPress={() => navigation.navigate('Details', { product })}
       activeOpacity={0.5}
       className="bg-gray-100 h-[225px] p-4 mb-5  mx-1"
