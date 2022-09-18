@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { LoginScreen, RegistrationScreen } from '../screens';
+import { RootStackParamList } from '../interfaces';
 import BottomTabNav from './BottomTabNav';
 import { Loader } from '../components';
 import { init } from '../features/auth/auth';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const globalScreenOptions = {
   // headerStyle: { backgroundColor: '#2c6bed' },

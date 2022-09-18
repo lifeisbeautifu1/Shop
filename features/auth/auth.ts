@@ -1,10 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const initialState = {
+import { IUser } from '../../interfaces';
+
+interface IState {
+  user: IUser | null;
+  loading: boolean;
+  initialRouteName: 'HomeTabs' | 'Login' | 'Register';
+  errors: any;
+}
+
+const initialState: IState = {
   user: null,
   loading: false,
-  initialRouteName: '',
+  initialRouteName: 'Login',
   errors: {
     username: null,
     email: null,

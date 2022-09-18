@@ -14,6 +14,8 @@ import { useEffect, useLayoutEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+
+import { NavigationProps } from '../interfaces';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { logout } from '../features/auth/auth';
 import { CategoryList, Card } from '../components';
@@ -28,7 +30,7 @@ import {
 } from '../features/products/products';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
 
   const dispatch = useAppDispatch();
 
@@ -39,7 +41,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (!user) {
-      // @ts-ignore
       navigation.replace('Login');
     }
   }, [user]);

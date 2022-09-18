@@ -3,12 +3,14 @@ import { View, Text, SafeAreaView, Keyboard, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 
+
+import { NavigationProps } from '../interfaces';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { login, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
 
   const [inputs, setInputs] = useState({
     email: '',
@@ -20,7 +22,6 @@ const LoginScreen = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     user && navigation.navigate('HomeTabs');
   }, [user]);
 
@@ -77,7 +78,6 @@ const LoginScreen = () => {
 
           <Button title="Login" onPress={handleLogin} />
           <Text
-            // @ts-ignore
             onPress={() => navigation.navigate('Register')}
             style={{
               color: '#000',

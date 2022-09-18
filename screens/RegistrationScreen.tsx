@@ -11,12 +11,14 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
+
+import { NavigationProps } from '../interfaces';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { register, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
 const RegistrationScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
 
   const [inputs, setInputs] = useState({
     username: '',
@@ -37,7 +39,6 @@ const RegistrationScreen = () => {
   };
 
   useEffect(() => {
-    // @ts-ignore
     user && navigation.navigate('HomeTabs');
   }, [user]);
 
@@ -113,7 +114,6 @@ const RegistrationScreen = () => {
           />
           <Button title="Register" onPress={handleRegister} />
           <Text
-            // @ts-ignore
             onPress={() => navigation.navigate('Login')}
             style={{
               color: '#000',

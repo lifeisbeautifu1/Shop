@@ -1,7 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, DetailsScreen } from '../screens';
 
-const Stack = createNativeStackNavigator();
+import { HomeScreen, DetailsScreen } from '../screens';
+import { HomeStackParamList } from '../interfaces';
+
+const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 const Router = () => {
   return (

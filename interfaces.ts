@@ -1,3 +1,8 @@
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+
 export interface IProduct {
   id: string;
   title: string;
@@ -19,3 +24,24 @@ export interface IUser {
   image_url: string;
   is_admin: boolean;
 }
+
+export type RootStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  HomeTabs: undefined;
+};
+
+export type HomeStackParamList = {
+  Home: undefined;
+  Details: { product: IProduct };
+};
+
+export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+
+export type HomeNavigationProps = NativeStackNavigationProp<HomeStackParamList>;
+
+export type Props = NativeStackScreenProps<HomeStackParamList, 'Details'>;
+
+export type DetailsScreenNavigationProp = Props['navigation'];
+
+export type DetailsScreenRouteProp = Props['route'];

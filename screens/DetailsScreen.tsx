@@ -8,12 +8,15 @@ import {
 import { useLayoutEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+
+
+import { HomeNavigationProps, DetailsScreenRouteProp } from '../interfaces';
 import { Rating, ImageCarousel } from '../components';
 
 const DetailsScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  // @ts-ignore
+  const navigation = useNavigation<HomeNavigationProps>();
+  const route = useRoute<DetailsScreenRouteProp>();
+
   const product = route.params.product;
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,7 +24,7 @@ const DetailsScreen = () => {
       headerTitleStyle: { color: 'black' },
       headerTintColor: 'black',
       headerBackTitle: 'Back',
-      title: product.name,
+      title: product.title,
       headerRight: () => (
         <View
           style={{
