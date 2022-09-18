@@ -58,7 +58,8 @@ export default ImageCarousel;
 
 const styles = StyleSheet.create({
   root: {
-    flex: 0.4,
+    width: '100%',
+    height: 500,
   },
   image: {
     margin: 10,

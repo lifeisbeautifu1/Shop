@@ -143,6 +143,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       <CategoryList />
+
       {products.length ? (
         <FlatList
           showsVerticalScrollIndicator={false}
