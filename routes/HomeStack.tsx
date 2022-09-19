@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { HomeScreen, DetailsScreen } from '../screens';
+import { HomeScreen, DetailsScreen, DetailsScreen2 } from '../screens';
 import { HomeStackParamList } from '../interfaces';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -17,9 +17,9 @@ const Router = () => {
         {() => <HomeScreen />}
       </Stack.Screen>
       <Stack.Screen
-        options={{ title: 'Details' }}
+        options={{ title: 'Details', headerShown: false }}
         name="Details"
-        component={DetailsScreen}
+        component={DetailsScreen2}
       />
     </Stack.Navigator>
   );

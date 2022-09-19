@@ -78,7 +78,7 @@ const HomeScreen = () => {
               title={user && user.username && user.username[0]}
               containerStyle={{ backgroundColor: '#2c6bed' }}
             >
-              <Avatar.Accessory size={14} />
+              {/* <Avatar.Accessory size={14} /> */}
             </Avatar>
           </TouchableOpacity>
         </View>
@@ -106,15 +106,22 @@ const HomeScreen = () => {
         <View>
           <Text className="text-[25px] font-extrabold">Welcome to</Text>
           <Text className="text-[38px] font-extrabold text-blue-500">
-            L&C Shop
+            L&amp;C Shop
           </Text>
         </View>
-        {/* <TouchableOpacity
-          activeOpacity={0.5}
-          className="mr-3 flex-1 justify-center items-end"
-        >
-          <FontAwesome name="shopping-cart" size={24} color="black" />
-        </TouchableOpacity> */}
+        <TouchableOpacity activeOpacity={0.5}>
+          <MaterialCommunityIcons
+            name="cart"
+            size={18}
+            color="#b9b9b9"
+            style={{
+              borderWidth: 1,
+              borderColor: '#f0f0f3',
+              padding: 12,
+              borderRadius: 12,
+            }}
+          />
+        </TouchableOpacity>
       </View>
       <View className="mt-4 flex-row items-center px-5">
         <View

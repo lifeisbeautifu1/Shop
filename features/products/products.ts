@@ -11,6 +11,7 @@ const initialState = {
   searchTerm: '',
   order: 'desc',
   loading: false,
+  
 };
 
 export const getProducts = createAsyncThunk(

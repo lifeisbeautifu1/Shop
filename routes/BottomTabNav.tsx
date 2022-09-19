@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { ShoppingCartScreen } from '../screens';
+import { AddressScreen, ShoppingCartScreen } from '../screens';
 import HomeStack from './HomeStack';
 import ShoppingCartStack from './ShoppingCartStack';
 
@@ -22,10 +22,19 @@ const BottomTabNav = () => {
       />
       <Tab.Screen
         options={{
-          title: 'Cart',
-          headerShown: false,
+          title: 'Offers',
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="shopping-cart" size={24} color={color} />
+            <FontAwesome name="tags" size={24} color={color} />
+          ),
+        }}
+        name="More"
+        component={AddressScreen}
+      />
+      <Tab.Screen
+        options={{
+          title: 'Cart',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="cart" size={24} color={color} />
           ),
         }}
         name="ShoppingCartStack"
@@ -39,17 +48,7 @@ const BottomTabNav = () => {
           ),
         }}
         name="Profile"
-        component={ShoppingCartScreen}
-      />
-      <Tab.Screen
-        options={{
-          title: 'Menu',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-menu" size={30} color={color} />
-          ),
-        }}
-        name="More"
-        component={ShoppingCartScreen}
+        component={AddressScreen}
       />
     </Tab.Navigator>
   );

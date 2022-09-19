@@ -7,7 +7,7 @@ const Router = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ title: 'Shopping Cart' }}
+        options={{ title: 'Shopping Cart', headerShown: false }}
         name="ShoppingCart"
         component={ShoppingCartScreen}
       />

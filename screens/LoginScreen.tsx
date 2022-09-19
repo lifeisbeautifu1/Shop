@@ -22,12 +22,16 @@ const LoginScreen = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    user && navigation.navigate('HomeTabs');
+    user && navigation.replace('HomeTabs');
   }, [user]);
 
   const handleLogin = () => {
     Keyboard.dismiss();
     dispatch(login(inputs));
+    setInputs({
+      email: '',
+      password: '',
+    });
   };
 
   const handleOnchange = (text: string, input: string) => {

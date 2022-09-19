@@ -1,6 +1,7 @@
 import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 import { IProduct } from '../interfaces';
 
 const width = Dimensions.get('screen').width / 2 - 30;
@@ -28,14 +29,16 @@ const Card: React.FC<CardProps> = ({ product }) => {
       </View>
       <Text className="mt-12 font-bold text-[17px]">{product.title}</Text>
       <View className="mt-1 flex-row justify-between">
-        <Text className="font-bold text-[19px]">${product.price}</Text>
-        <TouchableOpacity
+        <Text className="font-bold text-[19px] text-blue-500">
+          ${product.price}
+        </Text>
+        {/* <TouchableOpacity
           activeOpacity={0.5}
           style={{ borderRadius: 4 }}
           className="h-[25px] w-[25px] bg-blue-500 items-center justify-center  "
         >
           <Text className="font-bold text-[18px] text-white">+</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   );
