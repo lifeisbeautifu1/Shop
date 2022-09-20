@@ -4,7 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { IProduct } from '../interfaces';
-import { removeProduct } from '../features/cart/cart';
+import {
+  removeProduct,
+  incrementProduct,
+  decrementProduct,
+} from '../features/cart/cart';
 
 const MyCart = () => {
   const navigation = useNavigation();
@@ -17,7 +21,7 @@ const MyCart = () => {
 
   const checkOut = () => {};
 
-  const renderProducts = (product: IProduct) => {
+  const renderProducts = (product) => {
     return (
       <TouchableOpacity
         key={product.id}
@@ -108,7 +112,9 @@ const MyCart = () => {
                 alignItems: 'center',
               }}
             >
-              <View
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => dispatch(decrementProduct(product))}
                 style={{
                   borderRadius: 100,
                   marginRight: 20,
@@ -125,9 +131,11 @@ const MyCart = () => {
                     color: '#777',
                   }}
                 />
-              </View>
-              <Text>1</Text>
-              <View
+              </TouchableOpacity>
+              <Text>{product.quantity}</Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => dispatch(incrementProduct(product))}
                 style={{
                   borderRadius: 100,
                   marginLeft: 20,
@@ -144,7 +152,7 @@ const MyCart = () => {
                     color: '#777',
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={() => dispatch(removeProduct(product))}>
               <MaterialCommunityIcons
@@ -171,11 +179,10 @@ const MyCart = () => {
         height: '100%',
         backgroundColor: '#fff',
         position: 'relative',
-        paddingTop: 48,
       }}
     >
       <ScrollView>
-        <View
+        {/* <View
           style={{
             width: '100%',
             flexDirection: 'row',
@@ -212,14 +219,14 @@ const MyCart = () => {
             Order Details
           </Text>
           <View></View>
-        </View>
+        </View> */}
         <Text
           style={{
             fontSize: 20,
             color: '#000',
             fontWeight: '500',
             letterSpacing: 1,
-            paddingTop: 20,
+            paddingTop: 16,
             paddingLeft: 16,
             marginBottom: 10,
           }}

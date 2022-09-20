@@ -2,8 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IProduct } from '../../interfaces';
 
+interface ICartProduct extends IProduct {
+  quantity: number;
+}
+
 interface IState {
-  cartItems: IProduct[];
+  cartItems: ICartProduct[];
   total: number;
   subtotal: number;
   tax: number;
@@ -21,9 +25,20 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action: PayloadAction<IProduct>) => {
-      state.cartItems.push(action.payload);
+      if (state.cartItems.find((item) => item.id === action.payload.id)) {
+        state.cartItems = state.cartItems.map((item) => {
+          return item.id === action.payload.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item;
+        });
+      } else {
+        state.cartItems.push({
+          ...action.payload,
+          quantity: 1,
+        });
+      }
       state.subtotal = state.cartItems.reduce((total, product) => {
-        return (total = total + product.price);
+        return (total = total + product.price * product.quantity);
       }, 0);
       state.tax = state.subtotal / 50;
       state.total = state.subtotal + state.tax;
@@ -33,7 +48,31 @@ export const cartSlice = createSlice({
         (product) => product.id !== action.payload.id
       );
       state.subtotal = state.cartItems.reduce((total, product) => {
-        return (total = total + product.price);
+        return (total = total + product.price * product.quantity);
+      }, 0);
+      state.tax = state.subtotal / 50;
+      state.total = state.subtotal + state.tax;
+    },
+    incrementProduct: (state, action: PayloadAction<IProduct>) => {
+      state.cartItems = state.cartItems.map((item) => {
+        return item.id === action.payload.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item;
+      });
+      state.subtotal = state.cartItems.reduce((total, product) => {
+        return (total = total + product.price * product.quantity);
+      }, 0);
+      state.tax = state.subtotal / 50;
+      state.total = state.subtotal + state.tax;
+    },
+    decrementProduct: (state, action: PayloadAction<IProduct>) => {
+      state.cartItems = state.cartItems.map((item) => {
+        return item.id === action.payload.id
+          ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
+          : item;
+      });
+      state.subtotal = state.cartItems.reduce((total, product) => {
+        return (total = total + product.price * product.quantity);
       }, 0);
       state.tax = state.subtotal / 50;
       state.total = state.subtotal + state.tax;
@@ -41,6 +80,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addProduct, removeProduct } = cartSlice.actions;
+export const { addProduct, removeProduct, incrementProduct, decrementProduct } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
