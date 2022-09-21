@@ -1,13 +1,23 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useStripe } from '@stripe/stripe-react-native';
+import { useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { IProduct } from '../interfaces';
 import {
   removeProduct,
   incrementProduct,
   decrementProduct,
+  createPaymentIntent,
+  clearCart,
 } from '../features/cart/cart';
 
 const MyCart = () => {
@@ -15,11 +25,56 @@ const MyCart = () => {
 
   const dispatch = useAppDispatch();
 
-  const { cartItems, total, subtotal, tax } = useAppSelector(
+  const { cartItems, total, subtotal, tax, clientSecret } = useAppSelector(
     (state) => state.cart
   );
 
-  const checkOut = () => {};
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const initializePaymentSheet = async () => {
+    if (!clientSecret) {
+      return;
+    }
+    const { error } = await initPaymentSheet({
+      paymentIntentClientSecret: clientSecret,
+    });
+    console.log('success');
+    if (error) {
+      Alert.alert('error');
+    }
+  };
+
+  useEffect(() => {
+    if (total) {
+      dispatch(createPaymentIntent(total));
+    }
+  }, [total]);
+
+  useEffect(() => {
+    if (clientSecret) {
+      initializePaymentSheet();
+    }
+  }, [clientSecret]);
+
+  const openPaymentSheet = async () => {
+    if (!clientSecret) {
+      return;
+    }
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your payment is confirmed!', [], {
+        onDismiss: () => console.warn('later'),
+      });
+      dispatch(clearCart());
+    }
+  };
+
+  const checkOut = () => {
+    openPaymentSheet();
+  };
 
   const renderProducts = (product) => {
     return (
@@ -315,7 +370,7 @@ const MyCart = () => {
               />
             </View>
           </View>
-          <View
+          {/* <View
             style={{
               paddingHorizontal: 16,
               marginVertical: 10,
@@ -395,7 +450,7 @@ const MyCart = () => {
                 style={{ fontSize: 22, color: '#000' }}
               />
             </View>
-          </View>
+          </View> */}
           <View
             style={{
               paddingHorizontal: 16,

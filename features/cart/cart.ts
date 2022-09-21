@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { IProduct } from '../../interfaces';
 
@@ -11,6 +12,7 @@ interface IState {
   total: number;
   subtotal: number;
   tax: number;
+  clientSecret: string;
 }
 
 const initialState: IState = {
@@ -18,7 +20,25 @@ const initialState: IState = {
   total: 0,
   subtotal: 0,
   tax: 0,
+  clientSecret: '',
 };
+
+export const createPaymentIntent = createAsyncThunk(
+  'auth/createPaymentIntent',
+  async (amount: Number, thunkAPI) => {
+    try {
+      const { data } = await axios.post('/payment/create-payment-intent', {
+        amount,
+        currency: 'usd',
+      });
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error?.response?.data?.errors);
+    }
+  }
+);
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -77,10 +97,30 @@ export const cartSlice = createSlice({
       state.tax = state.subtotal / 50;
       state.total = state.subtotal + state.tax;
     },
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.subtotal = 0;
+      state.tax = 0;
+      state.total = 0;
+      state.clientSecret = '';
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // .addCase(createPaymentIntent.pending, (state) => {})
+      .addCase(createPaymentIntent.fulfilled, (state, action) => {
+        state.clientSecret = action.payload.clientSecret;
+      });
+    // .addCase(createPaymentIntent.rejected, (state, action: any) => {});
   },
 });
 
-export const { addProduct, removeProduct, incrementProduct, decrementProduct } =
-  cartSlice.actions;
+export const {
+  addProduct,
+  removeProduct,
+  incrementProduct,
+  decrementProduct,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
