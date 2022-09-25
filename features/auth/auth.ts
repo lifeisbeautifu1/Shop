@@ -6,14 +6,14 @@ import { IUser } from '../../interfaces';
 interface IState {
   user: IUser | null;
   loading: boolean;
-  initialRouteName: 'HomeTabs' | 'Login' | 'Register';
+  initialRouteName: 'Home';
   errors: any;
 }
 
 const initialState: IState = {
   user: null,
   loading: false,
-  initialRouteName: 'Login',
+  initialRouteName: 'Home',
   errors: {
     username: null,
     email: null,
@@ -156,7 +156,7 @@ export const authSlice = createSlice({
       .addCase(init.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
-        state.initialRouteName = 'HomeTabs';
+        state.initialRouteName = 'Home';
         state.errors = {
           username: null,
           email: null,

@@ -496,7 +496,7 @@ const MyCart = () => {
                   opacity: 0.8,
                 }}
               >
-                &#8377;{subtotal}.00
+                ${subtotal}.00
               </Text>
             </View>
             <View
@@ -526,7 +526,7 @@ const MyCart = () => {
                   opacity: 0.8,
                 }}
               >
-                &#8377;{tax}
+                ${tax}
               </Text>
             </View>
             <View

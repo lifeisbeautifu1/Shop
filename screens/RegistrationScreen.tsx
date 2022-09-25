@@ -38,9 +38,9 @@ const RegistrationScreen = () => {
     dispatch(register(inputs));
   };
 
-  useEffect(() => {
-    user && navigation.navigate('HomeTabs');
-  }, [user]);
+  // useEffect(() => {
+  //   user && navigation.navigate('HomeTabs');
+  // }, [user]);
 
   const handleOnchange = (text, input) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));

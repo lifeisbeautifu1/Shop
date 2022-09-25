@@ -21,9 +21,9 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    user && navigation.replace('HomeTabs');
-  }, [user]);
+  // useEffect(() => {
+  //   user && navigation.replace('HomeTabs');
+  // }, [user]);
 
   const handleLogin = () => {
     Keyboard.dismiss();

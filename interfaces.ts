@@ -28,7 +28,9 @@ export interface IUser {
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  HomeTabs: undefined;
+  Home: undefined;
+  ShoppingCart: undefined;
+  Details: undefined;
 };
 
 export type HomeStackParamList = {

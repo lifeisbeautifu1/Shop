@@ -1,11 +1,16 @@
 import {
   View,
   SafeAreaView,
+  ScrollView,
+  Image,
   FlatList,
   TextInput,
+  Dimensions,
+  Button,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +18,6 @@ import { Avatar } from '@rneui/base';
 import { useEffect, useLayoutEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 
 import { NavigationProps } from '../interfaces';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -29,21 +33,23 @@ import {
   setOrder,
 } from '../features/products/products';
 
+const width = Dimensions.get('screen').width;
+
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProps>();
 
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
+  // const { user } = useAppSelector((state) => state.auth);
 
   const { products, selectedCategory, searchTerm, order, page, loading } =
     useAppSelector((state) => state.products);
 
-  useEffect(() => {
-    if (!user) {
-      navigation.replace('Login');
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigation.replace('Login');
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     dispatch(searchProducts());
@@ -64,120 +70,216 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Home',
-      headerStyle: { backgroundColor: '#fff' },
-      headerTitleStyle: { color: 'black' },
-      headerTintColor: 'black',
-      headerShadowVisible: true, // applied here
-
-      headerLeft: () => (
-        <View>
-          <TouchableOpacity onPress={signOutUser}>
-            <Avatar
-              rounded
-              title={user && user.username && user.username[0]}
-              containerStyle={{ backgroundColor: '#2c6bed' }}
-            >
-              {/* <Avatar.Accessory size={14} /> */}
-            </Avatar>
-          </TouchableOpacity>
-        </View>
-      ),
-      // headerRight: () => (
-      //   <View
-      //     style={{
-      //       flexDirection: 'row',
-      //       justifyContent: 'center',
-      //       width: 40,
-      //     }}
-      //   >
-      //     <TouchableOpacity activeOpacity={0.5}>
-      //       <Entypo name="menu" size={28} color="black" />
-      //     </TouchableOpacity>
-      //   </View>
-      // ),
+      title: '',
     });
-  }, [navigation]);
+  });
+
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     title: 'Home',
+  //     headerStyle: { backgroundColor: '#fff' },
+  //     headerTitleStyle: { color: 'black' },
+  //     headerTintColor: 'black',
+  //     headerShadowVisible: true, // applied here
+
+  //     // headerLeft: () => (
+  //     //   <View>
+  //     //     <TouchableOpacity onPress={signOutUser}>
+  //     //       <Avatar
+  //     //         rounded
+  //     //         title={user && user.username && user.username[0]}
+  //     //         containerStyle={{ backgroundColor: '#2c6bed' }}
+  //     //       >
+  //     //         {/* <Avatar.Accessory size={14} /> */}
+  //     //       </Avatar>
+  //     //     </TouchableOpacity>
+  //     //   </View>
+  //     // ),
+  //     // headerRight: () => (
+  //     //   <View
+  //     //     style={{
+  //     //       flexDirection: 'row',
+  //     //       justifyContent: 'center',
+  //     //       width: 40,
+  //     //     }}
+  //     //   >
+  //     //     <TouchableOpacity activeOpacity={0.5}>
+  //     //       <Entypo name="menu" size={28} color="black" />
+  //     //     </TouchableOpacity>
+  //     //   </View>
+  //     // ),
+  //   });
+  // }, [navigation]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <StatusBar style="dark" />
-      <View className="flex-row justify-between mt-5 px-5">
-        <View>
-          <Text className="text-[25px] font-extrabold">Welcome to</Text>
-          <Text className="text-[38px] font-extrabold text-blue-500">
-            L&amp;C Shop
-          </Text>
-        </View>
-        <TouchableOpacity activeOpacity={0.5}>
-          <MaterialCommunityIcons
-            name="cart"
-            size={18}
-            color="#b9b9b9"
-            style={{
-              borderWidth: 1,
-              borderColor: '#f0f0f3',
-              padding: 12,
-              borderRadius: 12,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-      <View className="mt-4 flex-row items-center px-5">
-        <View
-          style={{ borderRadius: 10 }}
-          className="h-[50px] flex-row flex-1 pl-[20px] items-center bg-gray-100"
-        >
-          <AntDesign name="search1" size={24} color="black" />
-          <TextInput
-            placeholder="Search"
-            value={searchTerm}
-            onChangeText={(text) => dispatch(setSearchTerm(text))}
-            className="ml-2 font-bold  text-gray-600 text-[18px] flex-1"
-          />
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))}
-          style={{ borderRadius: 4 }}
-          className="ml-2 h-[45px] w-[45px] bg-blue-500 justify-center items-center"
-        >
-          <MaterialCommunityIcons
-            name={order === 'desc' ? 'sort-variant' : 'sort-reverse-variant'}
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-      </View>
-      <CategoryList />
-
-      {products.length ? (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          className="px-5"
-          style={{ flexGrow: 1 }}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
-          numColumns={2}
-          keyExtractor={(item) => item.id}
-          data={products}
-          onEndReachedThreshold={0}
-          onEndReached={() => {
-            if (!loading) {
-              dispatch(setPage(page + 1));
-            }
+    <ScrollView className="bg-white" style={{ flex: 1 }}>
+      <View className="relative mt-2">
+        <View className="absolute w-full h-full z-[10] bg-black/30"></View>
+        <Image
+          style={{ resizeMode: 'cover', width: '100%', height: 500 }}
+          source={{
+            uri: 'https://staticpages.mngbcn.com/homes/images/fw22/she/septiembre/she_landing_newnow_0109.jpg?imwidth=1440&imdensity=2',
           }}
-          ListFooterComponent={<View>{loading && <ActivityIndicator />}</View>}
-          renderItem={({ item }) => <Card product={item} />}
         />
-      ) : (
-        <View className="flex-1 items-center justify-center">
-          <Text className="font-bold text-[20px] text-gray-500">
-            No products found
-          </Text>
-        </View>
-      )}
-    </SafeAreaView>
+        <Text
+          style={{
+            textTransform: 'uppercase',
+            position: 'absolute',
+            zIndex: 20,
+            fontWeight: 'bold',
+            letterSpacing: 1,
+            fontSize: 24,
+            top: '42%',
+            left: '15%',
+            color: 'white',
+          }}
+        >
+          The Office Etiquette
+        </Text>
+        <TouchableOpacity
+          className="bg-white p-3 z-[20] absolute bottom-10 left-[35%]"
+          activeOpacity={0.9}
+        >
+          <Text>Узнать больше</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="relative">
+        <View className="absolute w-full h-full z-[10] bg-black/30"></View>
+        <Image
+          style={{ resizeMode: 'cover', width: '100%', height: 500 }}
+          source={{
+            uri: 'https://staticpages.mngbcn.com/homes/images/fw22/she/septiembre/she_landing_coattime_1909.jpg?imwidth=479&imdensity=2&impolicy=set_13',
+          }}
+        />
+        <Text
+          style={{
+            position: 'absolute',
+            zIndex: 20,
+            fontWeight: 'bold',
+            letterSpacing: 1,
+            fontSize: 24,
+            bottom: '20%',
+            left: '15%',
+            color: 'white',
+          }}
+        >
+          Coat Time
+        </Text>
+        <TouchableOpacity
+          className="text-white border-b border-b-white z-[20] absolute bottom-[15%] left-[15%]"
+          activeOpacity={0.9}
+        >
+          <Text className="text-white">Узнать больше</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="relative">
+        <View className="absolute w-full h-full z-[10] bg-black/30"></View>
+        <Image
+          style={{ resizeMode: 'cover', width: '100%', height: 500 }}
+          source={{
+            uri: 'https://staticpages.mngbcn.com/homes/images/fw22/she/septiembre/she_landing_keytrends_1909.jpg?imwidth=479&imdensity=2&impolicy=set_13',
+          }}
+        />
+        <Text
+          style={{
+            position: 'absolute',
+            zIndex: 20,
+            fontWeight: 'bold',
+            letterSpacing: 1,
+            fontSize: 24,
+            bottom: '20%',
+            left: '15%',
+            color: 'white',
+          }}
+        >
+          Key Trends
+        </Text>
+        <TouchableOpacity
+          className="text-white border-b border-b-white z-[20] absolute bottom-[15%] left-[15%]"
+          activeOpacity={0.9}
+        >
+          <Text className="text-white">Узнать больше</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+    // <SafeAreaView className="flex-1 bg-white">
+    //   <StatusBar style="dark" />
+    //   <View className="flex-row justify-between mt-5 px-5">
+    //     <View>
+    //       <Text className="text-[25px] font-extrabold">Welcome to</Text>
+    //       <Text className="text-[38px] font-extrabold text-blue-500">
+    //         L&amp;C Shop
+    //       </Text>
+    //     </View>
+    //     <TouchableOpacity activeOpacity={0.5}>
+    //       <MaterialCommunityIcons
+    //         name="cart"
+    //         size={18}
+    //         color="#b9b9b9"
+    //         style={{
+    //           borderWidth: 1,
+    //           borderColor: '#f0f0f3',
+    //           padding: 12,
+    //           borderRadius: 12,
+    //         }}
+    //       />
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View className="mt-4 flex-row items-center px-5">
+    //     <View
+    //       style={{ borderRadius: 10 }}
+    //       className="h-[50px] flex-row flex-1 pl-[20px] items-center bg-gray-100"
+    //     >
+    //       <AntDesign name="search1" size={24} color="black" />
+    //       <TextInput
+    //         placeholder="Search"
+    //         value={searchTerm}
+    //         onChangeText={(text) => dispatch(setSearchTerm(text))}
+    //         className="ml-2 font-bold  text-gray-600 text-[18px] flex-1"
+    //       />
+    //     </View>
+    //     <TouchableOpacity
+    //       activeOpacity={0.5}
+    //       onPress={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))}
+    //       style={{ borderRadius: 4 }}
+    //       className="ml-2 h-[45px] w-[45px] bg-blue-500 justify-center items-center"
+    //     >
+    //       <MaterialCommunityIcons
+    //         name={order === 'desc' ? 'sort-variant' : 'sort-reverse-variant'}
+    //         size={24}
+    //         color="white"
+    //       />
+    //     </TouchableOpacity>
+    //   </View>
+    //   <CategoryList />
+
+    //   {products.length ? (
+    //     <FlatList
+    //       showsVerticalScrollIndicator={false}
+    //       className="px-5"
+    //       style={{ flexGrow: 1 }}
+    //       columnWrapperStyle={{ justifyContent: 'space-between' }}
+    //       numColumns={2}
+    //       keyExtractor={(item) => item.id}
+    //       data={products}
+    //       onEndReachedThreshold={0}
+    //       onEndReached={() => {
+    //         if (!loading) {
+    //           dispatch(setPage(page + 1));
+    //         }
+    //       }}
+    //       ListFooterComponent={<View>{loading && <ActivityIndicator />}</View>}
+    //       renderItem={({ item }) => <Card product={item} />}
+    //     />
+    //   ) : (
+    //     <View className="flex-1 items-center justify-center">
+    //       <Text className="font-bold text-[20px] text-gray-500">
+    //         No products found
+    //       </Text>
+    //     </View>
+    //   )}
+    // </SafeAreaView>
   );
-};
+};;;;;
 
 export default HomeScreen;
