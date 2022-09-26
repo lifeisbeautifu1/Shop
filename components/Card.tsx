@@ -1,10 +1,10 @@
 import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { AntDesign } from '@expo/vector-icons';
 
 import { IProduct } from '../interfaces';
 
-const width = Dimensions.get('screen').width / 2 - 30;
+const width = Dimensions.get('screen').width / 2;
 
 interface CardProps {
   product: IProduct;
@@ -17,28 +17,43 @@ const Card: React.FC<CardProps> = ({ product }) => {
       // @ts-ignore
       onPress={() => navigation.navigate('Details', { product })}
       activeOpacity={0.5}
-      className="bg-gray-100 h-[225px] p-4 mb-5  mx-1"
+      className="mb-5 mr-[2px]"
       style={{ width, borderRadius: 10 }}
     >
-      <View className="h-[100px] items-center">
+      <View className="items-center">
         <Image
-          className="h-[150px] w-[100px]"
-          style={{ resizeMode: 'contain' }}
+          className="h-[270px]"
+          style={{ resizeMode: 'contain', width }}
           source={{ uri: product.image }}
         />
       </View>
-      <Text className="mt-12 font-bold text-[17px]">{product.title}</Text>
-      <View className="mt-1 flex-row justify-between">
-        <Text className="font-bold text-[19px] text-blue-500">
-          ${product.price}
-        </Text>
-        {/* <TouchableOpacity
-          activeOpacity={0.5}
-          style={{ borderRadius: 4 }}
-          className="h-[25px] w-[25px] bg-blue-500 items-center justify-center  "
+      <View className="p-2">
+        <View className="flex-row justify-between">
+          <Text className="uppercase font-semibold text-[#333]">New now</Text>
+          <TouchableOpacity>
+            <AntDesign name="hearto" size={16} color="gray" />
+          </TouchableOpacity>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={{
+            color: '#666',
+            marginTop: 4,
+            fontFamily: 'Raleway-Regular',
+            fontSize: 16,
+          }}
         >
-          <Text className="font-bold text-[18px] text-white">+</Text>
-        </TouchableOpacity> */}
+          {product.title}
+        </Text>
+        <Text style={{ marginTop: 4, color: '#777', fontSize: 16 }}>
+          {product.price > 1000
+            ? `${Math.floor(product.price / 1000)} ${product.price % 1000}`
+            : product.price}{' '}
+          руб.
+        </Text>
+        <Text style={{ marginTop: 4, color: '#777', fontSize: 12 }}>
+          6 цвета
+        </Text>
       </View>
     </TouchableOpacity>
   );

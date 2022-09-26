@@ -166,7 +166,7 @@ export const authSlice = createSlice({
       })
       .addCase(init.rejected, (state, action) => {
         state.loading = false;
-        state.initialRouteName = 'Login';
+        state.initialRouteName = 'Home';
       });
   },
 });

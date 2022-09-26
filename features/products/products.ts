@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const initialState = {
   products: [],
+  selectedProduct: null,
   categories: ['All'],
   selectedCategory: 'All',
   page: 1,
@@ -11,7 +12,6 @@ const initialState = {
   searchTerm: '',
   order: 'desc',
   loading: false,
-  
 };
 
 export const getProducts = createAsyncThunk(
@@ -88,6 +88,9 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
+    setSelectedProduct: (state, action) => {
+      state.selectedProduct = action.payload;
+    },
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
       state.page = 1;
@@ -154,7 +157,12 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { setSelectedCategory, setSearchTerm, setOrder, setPage } =
-  productsSlice.actions;
+export const {
+  setSelectedCategory,
+  setSearchTerm,
+  setOrder,
+  setPage,
+  setSelectedProduct,
+} = productsSlice.actions;
 
 export default productsSlice.reducer;

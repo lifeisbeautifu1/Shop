@@ -7,6 +7,7 @@ interface InputProps {
   iconName: 'email-outline' | 'lock-outline' | 'account-outline';
   error?: null | string;
   password?: boolean;
+  value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
   onFocus: () => void;
@@ -17,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   iconName,
   error,
   password,
+  value,
   onFocus = () => {},
   ...props
 }) => {
@@ -30,14 +32,14 @@ const Input: React.FC<InputProps> = ({
         style={[
           style.inputContainer,
           {
-            borderColor: error ? 'red' : isFocused ? '#7978B5' : '#F3F4FB',
+            borderColor: error ? 'red' : isFocused ? '#333' : '#F3F4FB',
             alignItems: 'center',
           },
         ]}
       >
         <MaterialCommunityIcons
           name={iconName}
-          style={{ color: '#7978B5', fontSize: 22, marginRight: 10 }}
+          style={{ color: '#333', fontSize: 22, marginRight: 10 }}
         />
         <TextInput
           autoCorrect={false}
@@ -45,16 +47,17 @@ const Input: React.FC<InputProps> = ({
             onFocus();
             setIsFocused(true);
           }}
+          value={value}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
-          style={{ color: '#7978B5', flex: 1 }}
+          style={{ color: '#333', flex: 1 }}
           {...props}
         />
         {password && (
           <MaterialCommunityIcons
             onPress={() => setHidePassword(!hidePassword)}
             name={hidePassword ? 'eye-outline' : 'eye-off-outline'}
-            style={{ color: '#7978B5', fontSize: 22 }}
+            style={{ color: '#333', fontSize: 22 }}
           />
         )}
       </View>

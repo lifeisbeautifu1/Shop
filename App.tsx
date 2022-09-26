@@ -1,7 +1,11 @@
+import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import { useFonts } from 'expo-font';
 import Navigation from './routes/Navigation';
+
+import { Loader } from './components';
 
 import axios from 'axios';
 
@@ -9,6 +13,14 @@ axios.defaults.baseURL = 'https://project-landc.herokuapp.com/api';
 axios.defaults.withCredentials = true;
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Raleway: require('./assets/fonts/Raleway-VariableFont_wght.ttf'),
+    'Raleway-Bold': require('./assets/fonts/Raleway-Bold.ttf'),
+    'Raleway-Light': require('./assets/fonts/Raleway-Light.ttf'),
+    'Raleway-Medium': require('./assets/fonts/Raleway-Medium.ttf'),
+    'Raleway-Regular': require('./assets/fonts/Raleway-Regular.ttf'),
+  });
+  if (!fontsLoaded) return <Loader />;
   return (
     <Provider store={store}>
       <StripeProvider

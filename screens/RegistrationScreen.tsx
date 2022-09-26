@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -11,14 +11,12 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-
-import { NavigationProps } from '../interfaces';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { register, resetError } from '../features/auth/auth';
 import { Button, Input, Loader } from '../components';
 
 const RegistrationScreen = () => {
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
 
   const [inputs, setInputs] = useState({
     username: '',
@@ -38,11 +36,12 @@ const RegistrationScreen = () => {
     dispatch(register(inputs));
   };
 
-  // useEffect(() => {
-  //   user && navigation.navigate('HomeTabs');
-  // }, [user]);
+  useEffect(() => {
+    // @ts-ignore
+    user && navigation.navigate('Home');
+  }, [user]);
 
-  const handleOnchange = (text, input) => {
+  const handleOnchange = (text: string, input: string) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));
   };
 
@@ -57,72 +56,77 @@ const RegistrationScreen = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 50,
+          paddingTop: 20,
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ color: '#000', fontSize: 40, fontWeight: 'bold' }}>
-          Register
+        <Text style={{ color: '#333', fontSize: 40, fontWeight: 'bold' }}>
+          Регистрация
         </Text>
         <Text style={{ color: '#BABBC3', fontSize: 18, marginVertical: 10 }}>
-          Enter Your Details to Register
+          Введи ваши данные для регистрации
         </Text>
         <View style={{ marginVertical: 20 }}>
           <Input
+            value={inputs.email}
             onChangeText={(text) => handleOnchange(text, 'email')}
             onFocus={() =>
               dispatch(resetError({ error: null, input: 'email' }))
             }
             iconName="email-outline"
-            label="Email"
-            placeholder="Enter your email address"
+            label="E-mail"
+            placeholder="Ваш e-mail адрес"
             error={errors.email}
           />
 
           <Input
+            value={inputs.username}
             onChangeText={(text) => handleOnchange(text, 'username')}
             onFocus={() =>
               dispatch(resetError({ error: null, input: 'username' }))
             }
             iconName="account-outline"
-            label="Full Name"
-            placeholder="Enter your full name"
+            label="Полное Имя"
+            placeholder="Ваше полное имя"
             error={errors.username}
           />
 
           <Input
+            value={inputs.password}
             onChangeText={(text) => handleOnchange(text, 'password')}
             onFocus={() =>
               dispatch(resetError({ error: null, input: 'password' }))
             }
             iconName="lock-outline"
-            label="Password"
-            placeholder="Enter your password"
+            label="Пароль"
+            placeholder="Ваш пароль"
             error={errors.password}
             password
           />
           <Input
+            value={inputs.confirmPassword}
             onChangeText={(text) => handleOnchange(text, 'confirmPassword')}
             onFocus={() =>
               dispatch(resetError({ error: null, input: 'confirmPassword' }))
             }
             iconName="lock-outline"
-            label="Password again"
-            placeholder="Confirm password"
+            label="Потворите пароль"
+            placeholder="Ваш пароль еще раз"
             error={errors.confirmPassword}
             password
           />
-          <Button title="Register" onPress={handleRegister} />
+          <Button title="Регистрация" onPress={handleRegister} />
           <Text
+            // @ts-ignore
             onPress={() => navigation.navigate('Login')}
             style={{
-              color: '#000',
+              color: '#333',
               fontWeight: 'bold',
               textAlign: 'center',
               fontSize: 16,
             }}
           >
-            Already have account ? Login
+            Уже зарегистрированы? Войти
           </Text>
         </View>
       </ScrollView>

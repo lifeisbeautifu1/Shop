@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = ({ title, onPress = () => {} }) => {
       style={{
         height: 55,
         width: '100%',
-        backgroundColor: '#2c6bed',
+        backgroundColor: '#333',
         borderRadius: 4,
         marginVertical: 20,
         justifyContent: 'center',

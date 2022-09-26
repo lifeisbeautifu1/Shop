@@ -7,21 +7,24 @@ import {
   Pressable,
 } from 'react-native';
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { NavigationProps } from '../interfaces';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setSearchTerm } from '../features/products/products';
 
 const Header = () => {
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
+
+  const route = useRoute();
 
   const dispatch = useAppDispatch();
+
+  const { user } = useAppSelector((state) => state.auth);
 
   const { searchTerm } = useAppSelector((state) => state.products);
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white' }}>
       <View
         style={{
           height: 100,
@@ -29,12 +32,11 @@ const Header = () => {
           paddingHorizontal: 20,
           flexDirection: 'row',
           alignItems: 'center',
-          //   borderWidth: 1,
-          //   borderBottomColor: '#e2e8f0',
         }}
       >
         <TouchableOpacity
-          activeOpacity={0.5}
+          // @ts-ignore
+          onPress={() => navigation.getParent('LeftDrawer').openDrawer()}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -42,9 +44,12 @@ const Header = () => {
           }}
         >
           <Ionicons name="menu-outline" size={28} color="gray" />
-          <Text style={{ fontSize: 12 }}>Меню</Text>
+          <Text style={{ fontSize: 12, fontFamily: 'Raleway-Regular' }}>
+            Меню
+          </Text>
         </TouchableOpacity>
-        <Pressable onPress={() => navigation.replace('Home')}>
+        {/* @ts-ignore */}
+        <Pressable onPress={() => navigation.navigate('Home')}>
           <Image
             style={{
               resizeMode: 'contain',
@@ -54,36 +59,48 @@ const Header = () => {
             source={{ uri: 'https://imgur.com/JTcZrZH.png' }}
           />
         </Pressable>
-        <TouchableOpacity activeOpacity={0.5} style={{ marginLeft: 'auto' }}>
+        <TouchableOpacity
+          onPress={() =>
+            user
+              ? // @ts-ignore
+                navigation.getParent('RightDrawer').openDrawer()
+              : // @ts-ignore
+                navigation.navigate('Login')
+          }
+          style={{ marginLeft: 'auto' }}
+        >
           <Feather name="user" size={24} color="gray" />
         </TouchableOpacity>
       </View>
       <View className="w-full h-[1px] bg-gray-200 my-2"></View>
-      <View
-        style={{
-          height: 40,
-          paddingHorizontal: 20,
-          paddingBottom: 5,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
+      {route.name !== 'Login' && route.name !== 'Register' && (
         <View
-          style={{ borderRadius: 10 }}
-          className="flex-row w-4/5 h-full pl-2 items-center bg-gray-100/90"
+          style={{
+            height: 40,
+            paddingHorizontal: 20,
+            paddingBottom: 8,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
         >
-          <AntDesign name="search1" size={20} color="black" />
-          <TextInput
-            placeholder="Искать"
-            value={searchTerm}
-            onChangeText={(text) => dispatch(setSearchTerm(text))}
-            className="ml-2 font-semibold  text-gray-600 text-[16px] flex-1"
-          />
+          <View
+            style={{ borderRadius: 4 }}
+            className="flex-row w-[90%] h-full pl-2 items-center bg-gray-100/90"
+          >
+            <AntDesign name="search1" size={20} color="black" />
+            <TextInput
+              placeholder="Искать"
+              style={{ fontFamily: 'Raleway-Regular' }}
+              value={searchTerm}
+              onChangeText={(text) => dispatch(setSearchTerm(text))}
+              className="ml-2 font-semibold  text-gray-600 text-[16px] flex-1"
+            />
+          </View>
+          <TouchableOpacity style={{ marginLeft: 'auto' }}>
+            <Ionicons name="filter-outline" size={24} color="gray" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={0.5} style={{ marginLeft: 'auto' }}>
-          <Ionicons name="filter-outline" size={24} color="gray" />
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 };
