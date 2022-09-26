@@ -7,7 +7,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { setIsFilterOpen, setOrder } from '../features/products/products';
@@ -30,6 +30,10 @@ const toggleAnimation = {
 const Filter = () => {
   const { width, height } = useWindowDimensions();
 
+  const { isFilterOpen, order } = useAppSelector((state) => state.products);
+
+  const [showModal, setShowModal] = useState(isFilterOpen);
+
   const [showOrder, setShowOrder] = useState(false);
 
   const [showSizes, setShowSizes] = useState(false);
@@ -37,8 +41,35 @@ const Filter = () => {
   const [showColors, setShowColors] = useState(false);
 
   const animationController = useRef(new Animated.Value(0)).current;
+
   const animationControllerForSizes = useRef(new Animated.Value(0)).current;
+
   const animationControllerForColors = useRef(new Animated.Value(0)).current;
+
+  const scaleValue = useRef(new Animated.Value(0)).current;
+
+  const toggleModal = () => {
+    if (isFilterOpen) {
+      // spring
+      Animated.timing(scaleValue, {
+        duration: 400,
+        toValue: 1,
+        useNativeDriver: true,
+      }).start();
+      setShowModal(true);
+    } else {
+      setTimeout(() => setShowModal(false), 400);
+      Animated.timing(scaleValue, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
+  useEffect(() => {
+    toggleModal();
+  }, [isFilterOpen]);
 
   const toggleOrder = () => {
     const config = {
@@ -94,13 +125,20 @@ const Filter = () => {
     outputRange: ['0deg', '180deg'],
   });
 
-  const { isFilterOpen, order } = useAppSelector((state) => state.products);
-
   const dispatch = useAppDispatch();
   return (
-    isFilterOpen && (
+    showModal && (
       <View style={[style.container, { height, width }]}>
-        <View style={[style.loader, { height, width }]}>
+        <Animated.View
+          style={[
+            style.loader,
+            { height, width },
+            {
+              opacity: scaleValue,
+            },
+            // { transform: [{ scale: scaleValue }] },
+          ]}
+        >
           <View className=" items-center relative pb-4 border-b border-gray-300">
             <Text
               className="text-[#333] text-[16px]"
@@ -473,7 +511,7 @@ const Filter = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </Animated.View>
       </View>
     )
   );

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
-import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -95,7 +95,8 @@ const Header = () => {
               onPress={() => dispatch(setIsFilterOpen(true))}
               style={{ marginLeft: 'auto' }}
             >
-              <Ionicons name="filter-outline" size={24} color="gray" />
+              <FontAwesome name="sort-alpha-asc" size={24} color="#666" />
+              {/* <Ionicons name="filter-outline" size={24} color="gray" /> */}
             </TouchableOpacity>
           </View>
         )}
