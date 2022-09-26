@@ -5,7 +5,7 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { useFonts } from 'expo-font';
 import Navigation from './routes/Navigation';
 
-import { Loader } from './components';
+import { Loader, Filter } from './components';
 
 import axios from 'axios';
 
@@ -31,6 +31,7 @@ export default function App() {
           timeout: 3,
         }}
       >
+        <Filter />
         <Navigation />
       </StripeProvider>
     </Provider>

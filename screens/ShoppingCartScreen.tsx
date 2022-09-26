@@ -84,7 +84,7 @@ const MyCart = () => {
         onPress={() => navigation.navigate('Details', { product })}
         style={{
           width: '100%',
-          height: 100,
+          height: 200,
           marginVertical: 6,
           flexDirection: 'row',
           alignItems: 'center',
@@ -92,15 +92,12 @@ const MyCart = () => {
       >
         <View
           style={{
-            width: '30%',
-            height: 100,
-            padding: 14,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#f0f0f3',
+            width: 200,
+            height: 200,
             borderRadius: 10,
             marginRight: 22,
           }}
+          className="bg-gray-200/90"
         >
           <Image
             source={{ uri: product.image }}
@@ -133,8 +130,9 @@ const MyCart = () => {
             <View
               style={{
                 marginTop: 4,
-                flexDirection: 'row',
                 alignItems: 'center',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
                 opacity: 0.6,
               }}
             >
@@ -142,15 +140,27 @@ const MyCart = () => {
                 style={{
                   fontSize: 14,
                   fontWeight: '400',
-                  maxWidth: '85%',
+                  maxWidth: '100%',
                   marginRight: 4,
                 }}
               >
-                ${product.price}
+                {product.price > 1000
+                  ? `${Math.floor(product.price / 1000)} ${
+                      product.price % 1000
+                    }`
+                  : product.price}{' '}
+                руб.
               </Text>
               <Text>
-                (~$
-                {product.price + product.price / 50})
+                (~
+                {product.price + 50 > 1000
+                  ? `${Math.floor((product.price + 50) / 1000)} ${
+                      (product.price + 50) % 1000 < 100
+                        ? `0${(product.price + 50) % 1000}`
+                        : (product.price + 50) % 1000
+                    }`
+                  : product.price}{' '}
+                руб.)
               </Text>
             </View>
           </View>
@@ -172,7 +182,7 @@ const MyCart = () => {
                 onPress={() => dispatch(decrementProduct(product))}
                 style={{
                   borderRadius: 100,
-                  marginRight: 20,
+                  marginRight: 10,
                   padding: 4,
                   borderWidth: 1,
                   borderColor: '#b9b9b9',
@@ -193,7 +203,7 @@ const MyCart = () => {
                 onPress={() => dispatch(incrementProduct(product))}
                 style={{
                   borderRadius: 100,
-                  marginLeft: 20,
+                  marginLeft: 10,
                   padding: 4,
                   borderWidth: 1,
                   borderColor: '#b9b9b9',
@@ -230,8 +240,7 @@ const MyCart = () => {
   return (
     <View
       style={{
-        width: '100%',
-        height: '100%',
+        flex: 1,
         backgroundColor: '#fff',
         position: 'relative',
       }}
@@ -286,7 +295,7 @@ const MyCart = () => {
             marginBottom: 10,
           }}
         >
-          My Cart
+          Моя Корзина
         </Text>
         <View style={{ paddingHorizontal: 16 }}>
           {cartItems ? cartItems.map(renderProducts) : null}
@@ -307,7 +316,7 @@ const MyCart = () => {
                 marginBottom: 20,
               }}
             >
-              Delivery Location
+              Адрес доставки
             </Text>
             <View
               style={{
@@ -455,7 +464,7 @@ const MyCart = () => {
             style={{
               paddingHorizontal: 16,
               marginTop: 40,
-              marginBottom: 80,
+              marginBottom: 20,
             }}
           >
             <Text
@@ -467,7 +476,7 @@ const MyCart = () => {
                 marginBottom: 20,
               }}
             >
-              Order Info
+              Информация о заказе
             </Text>
             <View
               style={{
@@ -486,7 +495,7 @@ const MyCart = () => {
                   opacity: 0.5,
                 }}
               >
-                Subtotal
+                Промежуточный итог
               </Text>
               <Text
                 style={{
@@ -496,7 +505,7 @@ const MyCart = () => {
                   opacity: 0.8,
                 }}
               >
-                ${subtotal}.00
+                {subtotal}.00 руб.
               </Text>
             </View>
             <View
@@ -516,7 +525,7 @@ const MyCart = () => {
                   opacity: 0.5,
                 }}
               >
-                Shipping Tax
+                Доставка
               </Text>
               <Text
                 style={{
@@ -526,7 +535,7 @@ const MyCart = () => {
                   opacity: 0.8,
                 }}
               >
-                ${tax}
+                {tax} руб.
               </Text>
             </View>
             <View
@@ -545,7 +554,7 @@ const MyCart = () => {
                   opacity: 0.5,
                 }}
               >
-                Total
+                Всего
               </Text>
               <Text
                 style={{
@@ -554,14 +563,28 @@ const MyCart = () => {
                   color: '#000',
                 }}
               >
-                ${total}
+                {total} руб.
               </Text>
             </View>
           </View>
         </View>
+        <TouchableOpacity
+          onPress={() => (total != 0 ? checkOut() : null)}
+          className="mx-4 bg-[#333] justify-center items-center  mb-10 p-4 mt-4"
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Raleway-Bold',
+              color: '#fff',
+            }}
+          >
+            Оплатить
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
 
-      <View
+      {/* <View
         style={{
           position: 'absolute',
           bottom: 10,
@@ -594,7 +617,7 @@ const MyCart = () => {
             CHECKOUT (${total} )
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

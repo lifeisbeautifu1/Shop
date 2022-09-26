@@ -1,10 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import {
-  Feather,
+  Ionicons,
   SimpleLineIcons,
   FontAwesome,
   MaterialIcons,
+  AntDesign,
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -28,14 +29,14 @@ const LeftDrawerContent = () => {
           <TouchableOpacity
             className="flex-row items-center"
             // @ts-ignore
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('ShoppingCart')}
           >
-            <Feather name="user" size={16} color="gray" />
+            <Ionicons name="cart-outline" size={16} color="gray" />
             <Text
               className="ml-2 text-gray-700 text-[16px]"
               style={{ fontFamily: 'Raleway-Regular' }}
             >
-              Профиль
+              Корзина
             </Text>
           </TouchableOpacity>
           <TouchableOpacity className="flex-row items-center">
@@ -44,7 +45,7 @@ const LeftDrawerContent = () => {
               className="ml-2 text-gray-700 text-[16px]"
               style={{ fontFamily: 'Raleway-Regular' }}
             >
-              Мои покупки
+              История Заказов
             </Text>
           </TouchableOpacity>
           <TouchableOpacity className="flex-row items-center">
@@ -54,6 +55,15 @@ const LeftDrawerContent = () => {
               style={{ fontFamily: 'Raleway-Regular' }}
             >
               Избранное
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="flex-row items-center">
+            <AntDesign name="message1" size={16} color="gray" />
+            <Text
+              className="ml-2 text-gray-700 text-[16px]"
+              style={{ fontFamily: 'Raleway-Regular' }}
+            >
+              Обратная связь
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

@@ -10,6 +10,7 @@ const initialState = {
   page: 1,
   pages: 1,
   searchTerm: '',
+  isFilterOpen: false,
   order: 'desc',
   loading: false,
 };
@@ -88,6 +89,9 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
+    setIsFilterOpen: (state, action) => {
+      state.isFilterOpen = action.payload;
+    },
     setSelectedProduct: (state, action) => {
       state.selectedProduct = action.payload;
     },
@@ -159,6 +163,7 @@ export const productsSlice = createSlice({
 
 export const {
   setSelectedCategory,
+  setIsFilterOpen,
   setSearchTerm,
   setOrder,
   setPage,

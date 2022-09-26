@@ -117,10 +117,7 @@ const Footer = () => {
         </TouchableOpacity>
       </View>
       <View className="mt-8 mb-8 items-center">
-        <Text
-          style={{ fontFamily: 'Raleway-Regular' }}
-          className="text-gray-400 text-xs"
-        >
+        <Text className="text-gray-400 text-xs">
           &copy; {new Date().getFullYear()} MANGO Все права защищены
         </Text>
       </View>

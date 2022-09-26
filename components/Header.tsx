@@ -1,16 +1,9 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setSearchTerm } from '../features/products/products';
+import { setSearchTerm, setIsFilterOpen } from '../features/products/products';
 
 const Header = () => {
   const navigation = useNavigation();
@@ -49,7 +42,7 @@ const Header = () => {
           </Text>
         </TouchableOpacity>
         {/* @ts-ignore */}
-        <Pressable onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Image
             style={{
               resizeMode: 'contain',
@@ -58,7 +51,7 @@ const Header = () => {
             }}
             source={{ uri: 'https://imgur.com/JTcZrZH.png' }}
           />
-        </Pressable>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
             user
@@ -73,34 +66,39 @@ const Header = () => {
         </TouchableOpacity>
       </View>
       <View className="w-full h-[1px] bg-gray-200 my-2"></View>
-      {route.name !== 'Login' && route.name !== 'Register' && (
-        <View
-          style={{
-            height: 40,
-            paddingHorizontal: 20,
-            paddingBottom: 8,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
+      {route.name !== 'Login' &&
+        route.name !== 'Register' &&
+        route.name !== 'ShoppingCart' && (
           <View
-            style={{ borderRadius: 4 }}
-            className="flex-row w-[90%] h-full pl-2 items-center bg-gray-100/90"
+            style={{
+              height: 40,
+              paddingHorizontal: 20,
+              paddingBottom: 8,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
-            <AntDesign name="search1" size={20} color="black" />
-            <TextInput
-              placeholder="Искать"
-              style={{ fontFamily: 'Raleway-Regular' }}
-              value={searchTerm}
-              onChangeText={(text) => dispatch(setSearchTerm(text))}
-              className="ml-2 font-semibold  text-gray-600 text-[16px] flex-1"
-            />
+            <View
+              style={{ borderRadius: 4 }}
+              className="flex-row w-[90%] h-full pl-2 items-center bg-gray-100/90"
+            >
+              <AntDesign name="search1" size={20} color="black" />
+              <TextInput
+                placeholder="Искать"
+                style={{ fontFamily: 'Raleway-Regular' }}
+                value={searchTerm}
+                onChangeText={(text) => dispatch(setSearchTerm(text))}
+                className="ml-2 font-semibold  text-gray-600 text-[16px] flex-1"
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => dispatch(setIsFilterOpen(true))}
+              style={{ marginLeft: 'auto' }}
+            >
+              <Ionicons name="filter-outline" size={24} color="gray" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{ marginLeft: 'auto' }}>
-            <Ionicons name="filter-outline" size={24} color="gray" />
-          </TouchableOpacity>
-        </View>
-      )}
+        )}
     </View>
   );
 };
