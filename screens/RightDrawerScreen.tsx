@@ -15,7 +15,7 @@ const RightDrawerScreen = () => {
       screenOptions={{
         drawerPosition: 'right',
         headerShown: false,
-        swipeEdgeWidth: user ? 100 : 0,
+        swipeEdgeWidth: user ? 50 : 0,
       }}
       drawerContent={() => <RightDrawerContent />}
       initialRouteName={'HomeStack'}

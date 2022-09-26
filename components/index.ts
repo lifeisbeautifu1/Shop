@@ -9,3 +9,4 @@ export { default as Header } from './Header';
 export { default as LeftDrawerContent } from './LeftDrawerContent';
 export { default as RightDrawerContent } from './RightDrawerContent';
 export { default as HomeScreenCard } from './HomeScreenCard';
+export { default as Footer } from './Footer';

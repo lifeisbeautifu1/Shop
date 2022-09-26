@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StatusBar,
   ScrollView,
   TouchableOpacity,
   FlatList,
@@ -10,20 +9,21 @@ import {
   Animated,
   Alert,
 } from 'react-native';
-import { Entypo, Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { Entypo, AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { Footer } from '../components';
 import { addProduct } from '../features/cart/cart';
-// import { HomeNavigationProps, DetailsScreenRouteProp } from '../interfaces';
 
 const DetailsScreen = () => {
   const navigation = useNavigation();
-  const route = useRoute();
 
-  // @ts-ignore
-  const product = route.params.product;
   const width = Dimensions.get('window').width;
+
+  const { selectedProduct: product } = useAppSelector(
+    (state) => state.products
+  );
 
   const dispatch = useAppDispatch();
 
@@ -32,10 +32,10 @@ const DetailsScreen = () => {
   let position = Animated.divide(scrollX, width);
 
   const addToCart = async () => {
-    Alert.alert('Success', `${product.title} successfully added to cart.`);
+    Alert.alert('Успешно', `${product.title} успешно добавлена в корзину.`);
     dispatch(addProduct(product));
     // @ts-ignore
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   };
 
   //product horizontal scroll product card
@@ -44,17 +44,15 @@ const DetailsScreen = () => {
       <View
         style={{
           width: width,
-          height: 240,
-          alignItems: 'center',
-          justifyContent: 'center',
+          height: '100%',
         }}
       >
         <Image
           source={{ uri: item }}
           style={{
-            width: '100%',
-            height: '100%',
-            resizeMode: 'contain',
+            width: width,
+            height: 600,
+            resizeMode: 'cover',
           }}
         />
       </View>
@@ -64,55 +62,24 @@ const DetailsScreen = () => {
   return (
     <View
       style={{
-        width: '100%',
-        height: '100%',
+        flex: 1,
         backgroundColor: '#fff',
         position: 'relative',
       }}
     >
-      <StatusBar backgroundColor="#f0f0f3" barStyle="dark-content" />
-      <ScrollView style={{ marginBottom: 40 }}>
+      <ScrollView>
         <View
           style={{
-            width: '100%',
-            backgroundColor: '#f0f0f3',
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            paddingTop: 64,
             position: 'relative',
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 4,
           }}
         >
-          <View
-            style={{
-              position: 'absolute',
-              top: 50,
-              left: 0,
-              zIndex: 10,
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingTop: 16,
-              paddingLeft: 16,
-            }}
-          >
-            <TouchableOpacity onPress={() => {}}>
-              <Entypo
-                name="chevron-left"
-                style={{
-                  fontSize: 18,
-                  color: '#777',
-                  padding: 12,
-                  backgroundColor: '#fff',
-                  borderRadius: 10,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
           <FlatList
-            data={product.images ? product.images : null}
+            data={
+              product.images.length !== 0 ? product.images : [product.image]
+            }
             horizontal
             renderItem={renderProduct}
             showsHorizontalScrollIndicator={false}
@@ -124,14 +91,22 @@ const DetailsScreen = () => {
               { useNativeDriver: false }
             )}
           />
+          <View className="bg-gray-200 text-[#333] p-2 absolute top-5 right-5">
+            <Text>
+              {product.price > 1000
+                ? `${Math.floor(product.price / 1000)} ${product.price % 1000}`
+                : product.price}{' '}
+              руб.
+            </Text>
+          </View>
           <View
             style={{
               width: '100%',
+              position: 'absolute',
+              top: 20,
+              left: 20,
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 16,
-              marginTop: 32,
             }}
           >
             {product.images
@@ -145,9 +120,9 @@ const DetailsScreen = () => {
                     <Animated.View
                       key={index}
                       style={{
-                        width: '16%',
-                        height: 2.4,
-                        backgroundColor: '#000',
+                        width: 6,
+                        height: 6,
+                        backgroundColor: '#333',
                         opacity,
                         marginHorizontal: 4,
                         borderRadius: 100,
@@ -158,7 +133,88 @@ const DetailsScreen = () => {
               : null}
           </View>
         </View>
+        <View className="w-full p-4 gap-4 flex-row justify-center items-center">
+          <TouchableOpacity className="w-4 h-4 bg-purple-200"></TouchableOpacity>
+          <TouchableOpacity className="relative">
+            <View className="w-4 h-4 bg-orange-100 outline-2 outline-offset-1"></View>
+            <View className="absolute w-6 h-6 border-gray-200 border-2 -top-1 -left-1 ]"></View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-4 h-4 bg-gray-500"></TouchableOpacity>
+          <TouchableOpacity className="w-4 h-4 bg-blue-200"></TouchableOpacity>
+        </View>
+        <TouchableOpacity className="flex-row items-center justify-between mx-4 p-4 border border-gray-300">
+          <Text style={{ fontFamily: 'Raleway-Regular' }}>Выберите размер</Text>
+          <Entypo name="chevron-down" size={16} color="#666" />
+        </TouchableOpacity>
+        <TouchableOpacity className="mt-4 bg-[#333] p-2 ml-4 justify-center items-center w-12">
+          <AntDesign name="hearto" size={24} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity className="flex-row items-center justify-center mx-4 p-4 border border-gray-300 mt-4">
+          <Text style={{ fontFamily: 'Raleway-Regular' }}>
+            Наличие в магазине
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={addToCart}
+          className="mx-4 bg-[#333] justify-center items-center p-4 mt-4"
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Raleway-Bold',
+              color: '#fff',
+            }}
+          >
+            Купить
+          </Text>
+        </TouchableOpacity>
+        <View className="mt-6 mx-4">
+          <Text className="uppercase tracking-[1px]  text-[#333]">New Now</Text>
+          <Text className="mt-4 text-black text-[16px]">{product.title}</Text>
+          <Text
+            className="mt-4"
+            style={{
+              fontSize: 14,
+              lineHeight: 22,
+              fontFamily: 'Raleway-Regular',
+            }}
+          >
+            {product.tags}
+          </Text>
+          <Text
+            className="mt-4"
+            style={{
+              fontSize: 14,
+              lineHeight: 22,
+              fontFamily: 'Raleway-Regular',
+            }}
+          >
+            {product.description}
+          </Text>
+        </View>
         <View
+          style={{ marginLeft: 0, marginTop: 1 }}
+          className="flex-row gap-4 items-center"
+        >
+          <View className="p-2 bg-gray-200">
+            <Text
+              className="text-[#333]"
+              style={{ fontFamily: 'Raleway-Regular' }}
+            >
+              Женская
+            </Text>
+          </View>
+          <View className="p-2 bg-gray-200">
+            <Text
+              className="text-[#333]"
+              style={{ fontFamily: 'Raleway-Regular' }}
+            >
+              Рубашки
+            </Text>
+          </View>
+        </View>
+        <Footer />
+        {/* <View
           style={{
             paddingHorizontal: 16,
             marginTop: 6,
@@ -301,9 +357,9 @@ const DetailsScreen = () => {
               {product.price + product.price / 50})
             </Text>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
-      <View
+      {/* <View
         style={{
           position: 'absolute',
           bottom: 20,
@@ -336,7 +392,7 @@ const DetailsScreen = () => {
             Add to cart
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

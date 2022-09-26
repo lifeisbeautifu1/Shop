@@ -3,6 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 import { IProduct } from '../interfaces';
+import { setSelectedProduct } from '../features/products/products';
+import { useAppDispatch } from '../app/hooks';
 
 const width = Dimensions.get('screen').width / 2;
 
@@ -11,11 +13,15 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      // @ts-ignore
-      onPress={() => navigation.navigate('Details', { product })}
+      onPress={() => {
+        // @ts-ignore
+        navigation.navigate('Details');
+        dispatch(setSelectedProduct(product));
+      }}
       activeOpacity={0.5}
       className="mb-5 mr-[2px]"
       style={{ width, borderRadius: 10 }}
