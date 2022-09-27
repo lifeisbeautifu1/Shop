@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { useFonts } from 'expo-font';
 import Navigation from './routes/Navigation';
 
-import { Loader, Filter } from './components';
+import { Loader, FilterModal } from './components';
 
 import axios from 'axios';
 
@@ -30,7 +31,8 @@ export default function App() {
           backgroundColor: '#fff',
         }}
       >
-        <Filter />
+        <FilterModal />
+
         <Navigation />
       </StripeProvider>
     </Provider>

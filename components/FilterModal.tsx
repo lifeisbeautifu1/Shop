@@ -1,17 +1,19 @@
 import {
-  useWindowDimensions,
-  View,
-  Text,
+  Alert,
+  Modal,
   StyleSheet,
-  Animated,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
   LayoutAnimation,
+  Animated,
 } from 'react-native';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
 import { useState, useRef, useEffect } from 'react';
 
-import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { setIsFilterOpen, setOrder } from '../features/products/products';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
 
 const toggleAnimation = {
   duration: 300,
@@ -27,12 +29,10 @@ const toggleAnimation = {
   },
 };
 
-const Filter = () => {
+const FilterModal = () => {
   const { width, height } = useWindowDimensions();
 
   const { isFilterOpen, order } = useAppSelector((state) => state.products);
-
-  const [showModal, setShowModal] = useState(isFilterOpen);
 
   const [showOrder, setShowOrder] = useState(false);
 
@@ -40,36 +40,13 @@ const Filter = () => {
 
   const [showColors, setShowColors] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const animationController = useRef(new Animated.Value(0)).current;
 
   const animationControllerForSizes = useRef(new Animated.Value(0)).current;
 
   const animationControllerForColors = useRef(new Animated.Value(0)).current;
-
-  const scaleValue = useRef(new Animated.Value(0)).current;
-
-  const toggleModal = () => {
-    if (isFilterOpen) {
-      // spring
-      Animated.timing(scaleValue, {
-        duration: 400,
-        toValue: 1,
-        useNativeDriver: true,
-      }).start();
-      setShowModal(true);
-    } else {
-      setTimeout(() => setShowModal(false), 400);
-      Animated.timing(scaleValue, {
-        toValue: 0,
-        duration: 400,
-        useNativeDriver: true,
-      }).start();
-    }
-  };
-
-  useEffect(() => {
-    toggleModal();
-  }, [isFilterOpen]);
 
   const toggleOrder = () => {
     const config = {
@@ -125,32 +102,36 @@ const Filter = () => {
     outputRange: ['0deg', '180deg'],
   });
 
-  const dispatch = useAppDispatch();
   return (
-    showModal && (
-      <View style={[style.container, { height, width }]}>
-        <Animated.View
-          style={[
-            style.loader,
-            { height, width },
-            {
-              opacity: scaleValue,
-            },
-            // { transform: [{ scale: scaleValue }] },
-          ]}
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={isFilterOpen}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        dispatch(setIsFilterOpen(!isFilterOpen));
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View
+          style={{
+            width,
+            height,
+            backgroundColor: 'white',
+          }}
         >
-          <View className=" items-center relative pb-4 border-b border-gray-300">
+          <View className="mt-12 items-center relative pb-4 border-b border-gray-300">
             <Text
               className="text-[#333] text-[16px]"
               style={{ fontFamily: 'Raleway-Bold' }}
             >
               Отфильтровать и упорядочить
             </Text>
-            <View className="absolute top-0 right-4">
+            <View className="absolute top-1 right-4">
               <TouchableOpacity
                 onPress={() => dispatch(setIsFilterOpen(false))}
               >
-                <EvilIcons name="close" size={24} color="#333" />
+                <EvilIcons name="close" size={28} color="#333" />
               </TouchableOpacity>
             </View>
           </View>
@@ -490,17 +471,17 @@ const Filter = () => {
             </View>
 
             <View
-              className="justify-evenly"
-              style={{ flexDirection: 'row', marginBottom: 40 }}
+              className="justify-evenly mx-4"
+              style={{ flexDirection: 'row', marginBottom: 60 }}
             >
-              <TouchableOpacity className=" py-3 px-5 w-full border border-gray-300 items-center">
+              <TouchableOpacity className="flex-[0.5]  mr-4 py-3 px-2 w-full border border-gray-300 items-center">
                 <Text style={{ fontFamily: 'Raleway-Medium' }}>
                   Удалить фильтры
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => dispatch(setIsFilterOpen(false))}
-                className="py-3 px-5 w-full border bg-[#333] items-center"
+                className="flex-[0.45] py-3 px-2 w-full border bg-[#333] items-center"
               >
                 <Text
                   style={{ fontFamily: 'Raleway-Medium' }}
@@ -511,26 +492,61 @@ const Filter = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </Animated.View>
+          {/* <Text style={styles.modalText}>Hello World!</Text>
+          <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => dispatch(setIsFilterOpen(!isFilterOpen))}
+          >
+            <Text style={styles.textStyle}>Hide Modal</Text>
+          </Pressable> */}
+        </View>
       </View>
-    )
+    </Modal>
   );
 };
 
-const style = StyleSheet.create({
-  loader: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    paddingTop: 80,
-    zIndex: 10,
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
-  container: {
-    position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    top: 0,
-    letf: 0,
-    zIndex: 1,
+  modalView: {
+    flex: 1,
+    margin: 20,
+    backgroundColor: 'white',
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 
-export default Filter;
+export default FilterModal;
