@@ -10,7 +10,6 @@ import {
   Alert,
 } from 'react-native';
 import { Entypo, AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Footer } from '../components';

@@ -38,21 +38,16 @@ const MyCart = () => {
     const { error } = await initPaymentSheet({
       paymentIntentClientSecret: clientSecret,
     });
-    console.log('success');
+    // console.log('success');
     if (error) {
       Alert.alert('error');
     }
   };
 
   useEffect(() => {
-    if (total) {
-      dispatch(createPaymentIntent(total));
-    }
-  }, [total]);
-
-  useEffect(() => {
     if (clientSecret) {
       initializePaymentSheet();
+      openPaymentSheet();
     }
   }, [clientSecret]);
 
@@ -69,11 +64,13 @@ const MyCart = () => {
         onDismiss: () => console.warn('later'),
       });
       dispatch(clearCart());
+      // @ts-ignore
+      navigation.navigate('Products');
     }
   };
 
   const checkOut = () => {
-    openPaymentSheet();
+    dispatch(createPaymentIntent(total));
   };
 
   const renderProducts = (product) => {

@@ -29,9 +29,9 @@ export const createPaymentIntent = createAsyncThunk(
     try {
       const { data } = await axios.post('/payment/create-payment-intent', {
         amount,
-        currency: 'usd',
+        currency: 'rub',
       });
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       console.log(error);
