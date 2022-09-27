@@ -17,13 +17,13 @@ import { Footer } from '../components';
 import { addProduct } from '../features/cart/cart';
 
 const DetailsScreen = () => {
-  const navigation = useNavigation();
-
   const width = Dimensions.get('window').width;
 
   const { selectedProduct: product } = useAppSelector(
     (state) => state.products
   );
+
+  const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -156,6 +156,7 @@ const DetailsScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={addToCart}
+          disabled={!user}
           className="mx-4 bg-[#333] justify-center items-center p-4 mt-4"
         >
           <Text

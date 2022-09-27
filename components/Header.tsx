@@ -95,7 +95,7 @@ const Header = () => {
               onPress={() => dispatch(setIsFilterOpen(true))}
               style={{ marginLeft: 'auto' }}
             >
-              <FontAwesome name="sort-alpha-asc" size={24} color="#666" />
+              <FontAwesome name="sort-alpha-asc" size={20} color="#666" />
               {/* <Ionicons name="filter-outline" size={24} color="gray" /> */}
             </TouchableOpacity>
           </View>
