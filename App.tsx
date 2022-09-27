@@ -28,7 +28,6 @@ export default function App() {
         merchantIdentifier="L&C shop"
         threeDSecureParams={{
           backgroundColor: '#fff',
-          timeout: 3,
         }}
       >
         <Filter />

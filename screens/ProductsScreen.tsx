@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { useEffect } from 'react';
 
-import { Card } from '../components';
+import { Card, Loader } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   getProducts,
@@ -37,7 +37,9 @@ const ProductsScreen = () => {
   }, []);
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {products.length ? (
+      {loading ? (
+        <Loader />
+      ) : products.length ? (
         <FlatList
           showsVerticalScrollIndicator={false}
           style={{ flexGrow: 1 }}

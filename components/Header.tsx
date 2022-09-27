@@ -92,7 +92,9 @@ const Header = () => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => dispatch(setIsFilterOpen(true))}
+              onPress={() => {
+                dispatch(setIsFilterOpen(true));
+              }}
               style={{ marginLeft: 'auto' }}
             >
               <FontAwesome name="sort-alpha-asc" size={20} color="#666" />

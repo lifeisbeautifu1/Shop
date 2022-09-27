@@ -522,11 +522,14 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     paddingTop: 80,
+    zIndex: 10,
   },
   container: {
     position: 'absolute',
-    zIndex: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    top: 0,
+    letf: 0,
+    zIndex: 1,
   },
 });
 
